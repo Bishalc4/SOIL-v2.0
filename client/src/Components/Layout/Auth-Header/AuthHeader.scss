@@ -1,0 +1,14 @@
+@import "../../../common.scss";
+
+.authentication-header{
+    width: $common-width;
+    display: flex;
+    justify-content: center;
+    padding: 14px 3%;
+    padding-bottom: 0px;
+}
+.logo{
+    width: 200px;
+    height: auto;
+    cursor: pointer;
+}

@@ -1,0 +1,111 @@
+@import "../../../common.scss";
+
+.meal-containers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;
+    padding: 1%;
+    border-radius: 20px;
+    color: $font-color;
+    width: 25%;
+    margin-left: 1%;
+    margin-right: 1%;
+
+    .meal-image{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+        height: auto;
+
+        img{
+            width: 100%;
+            height: auto;
+        }
+
+        .delete-meal-btn{
+            margin-top: 3%;
+            border: none;
+            color: white;
+            background-color: $font-color;
+            padding: 5%;
+            border-radius: 30px;
+            font-size: 100%;
+            border: 1px solid $font-color;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .delete-meal-btn:hover{
+            background-color: white;
+            color: $font-color;
+        }
+    }
+    .meal-text{
+        width: 50%;
+
+        h2{
+            margin: 0;
+        }
+
+        h3{
+            color: rgb(57, 56, 56);
+            margin: 0;
+            font-style: italic;
+        }
+    }
+
+    a{
+        text-decoration: none;
+        color: $font-color;
+    }
+  }
+  
+
+// .meal-containers {
+//     display: inline-block; /* Set display to inline-block */
+//     background-color: white;
+//     color: $font-color;
+//     padding: 2%;
+//     height: 200px; /* Fixed height for all meal card containers */
+//     width: calc(50% - 20px); /* Each card takes 50% of the container width with some margin */
+//     margin: 10px; /* Add margin around each meal card */
+
+//     .meal-text {
+//         flex: 1; /* Make the text section flexible */
+//         padding: 10px; /* Add padding to the text section */
+//     }
+
+//     .meal-image {
+
+//         img {
+//             width: 100%;
+//             height: 100%; /* Ensure the image takes full height of its container */
+//             object-fit: cover; /* Ensure the image covers the entire container */
+//         }
+//     }
+
+//     .image-anchor {
+//         display: block; /* Make the anchor a block element */
+//         width: 100%;
+//         height: 100%; /* Ensure the anchor takes full height */
+//     }
+
+//     h2 {
+//         color: $font-color;
+//     }
+
+//     h3 {
+//         margin: 0;
+//     }
+
+//     a {
+//         text-decoration: none;
+//     }
+
+//     a:hover {
+//         text-decoration: underline;
+//         color: $font-color;
+//     }
+// }

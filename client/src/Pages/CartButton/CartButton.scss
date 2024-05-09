@@ -1,0 +1,36 @@
+@import "../../common.scss";
+
+.cart-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 60px;
+    width: 120px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #DEDFDC;
+    border-radius: 30px;
+    font-size: 17px;
+    background-color: #f5f5f5;
+}
+.cart-button-content{
+    display: flex;
+    align-items: center;
+    margin: 0;
+    background-color: transparent;
+}
+button:hover{
+    border-color: #899195;
+    margin: 0;
+}
+.cart-icon{
+    height: 20px;
+    width: auto;
+    background-color: #f5f5f5;
+    margin-right: 3px;
+}
+.cart-total{
+    font-size: 20px;
+    background-color: #f5f5f5;
+}

@@ -1,0 +1,24 @@
+@import "../../common.scss";
+
+.about-container {
+  max-width: 60%;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 1rem;
+  box-shadow: 0.2rem;
+  font-size: 1rem;
+
+  div {
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    color: #333;
+  }
+
+  .welcome-text, .about-text, .offer-text, .contact-info {
+    color: #555;
+  }
+}

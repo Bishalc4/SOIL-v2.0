@@ -1,0 +1,35 @@
+@import "../../../common.scss";
+
+.search-box{
+    display: flex;
+    align-self: center;
+    background-color: #f5f5f5;
+    padding: 15px 20px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #DEDFDC;
+    border-radius: 30px;
+}
+.search-box:hover{
+    border-color: #899195;
+}
+.search-box input{
+    padding: 0px;
+    background: inherit;
+    border: none;
+    outline: 0;
+    color: #3a474e;
+    font-size: 22px;
+    width: 500px;
+    max-width: 1000px;
+}
+.search-box input::placeholder{
+    color: #3a474e;
+}
+.search-icon{
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+    background-color: #f5f5f5;
+    color: #3a474e;
+}

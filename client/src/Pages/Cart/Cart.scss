@@ -1,0 +1,136 @@
+@import "../../common.scss";
+
+.heading-title {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  margin: auto;
+}
+.cartPage-container {
+  width: 60%;
+  margin: auto; 
+
+  .cart-container img {
+    width: 70px;
+    height: 70px;
+  }
+  .cart-detail {
+    display: flex;
+    width: 135px;
+
+    p {
+    font-weight: bold;
+    margin-left: 10px;
+    margin-top: 30px;
+    }
+  }
+
+  .cart-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    border-bottom: 2px solid $font-color;
+    padding-bottom: 5px;
+  }
+
+  .quantity-buttons button {
+    padding: 5px 10px;
+    font-weight: bold;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+
+  .price-and-delete button {
+    padding: 5px 10px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: $font-color;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+  }
+
+  .price-and-delete span {
+    background-color: $font-color;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: none;
+  }
+}
+  
+
+.cartTotal {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    .total-title {
+      font-size: 1.5rem;
+      color: $font-color;
+      font-weight: bold;
+    }
+    
+    .total-amount {
+      font-size: 1.5rem;
+      color: $font-color;
+      font-weight: bold;
+    }
+  }
+
+  .cartProceed {
+    margin-top: 30px;
+    margin-bottom: 60px;
+    text-align: right;
+
+    button {
+      width: 15%;
+      color: white;
+      font-size: 1.2rem; 
+      background-color: $font-color;
+      border-radius: 5px;
+      padding: 10px 20px; 
+      cursor: pointer;
+      border: none;
+    }
+  }
+  .empty-cart {
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+  }
+  
+  .empty-cart p {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .empty-cart img {
+    width: 500px;
+    margin-bottom: 20px;
+  }
+  
+  .empty-cart button {
+    display: block; 
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: $font-color;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: auto;
+    border: none; 
+  }
+  
+  .empty-cart button:hover {
+    background-color: $font-color;
+  }
+  

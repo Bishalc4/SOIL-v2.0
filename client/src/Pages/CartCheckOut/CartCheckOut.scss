@@ -1,0 +1,127 @@
+@import "../../common.scss";
+
+.form-container {
+  width: 90%;
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+
+  p {
+    color: red;
+    font-size: 12px;
+    margin-bottom: 0.2px;
+  }    
+
+  .form-column {
+    flex: 2;
+  }
+}
+.deliveryAddress {
+  width: 80%;
+  margin: 20px auto;
+  box-shadow: 0 0 1px $font-color;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: white;
+  margin-bottom: 40px;
+  margin-right: 5%;
+
+  .address-input-control {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.amount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.price {
+  padding: 4px 7px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.header {
+  box-shadow: 0 0 1px black;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #fff;
+  margin-top: 20px;
+
+  p {
+    margin: 5px;
+  }
+}
+
+main {
+  margin: 10px 0;
+  box-shadow: 0 0 2px black;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #fff;
+
+  input {
+    margin-top: 10px;
+    padding: 5px;
+  }
+
+  .card-Number {
+    margin-top: 10px;
+
+    input {
+      width: 95%;
+      height: 35px;
+    }
+  }
+
+  .Expiry-and-cvv {
+    display: flex;
+
+    div {
+      margin-top: 15px;
+    }
+
+    input {
+      width: 100px;
+      height: 30px;
+    }
+
+    .cvv {
+      input {
+        width: 100px;
+        height: 30px;
+        margin-right: 40px;
+      }
+    }
+  }
+
+  .checkout-button {
+    margin-bottom: 10px;
+    margin-top: 90px;
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      height: 35px;
+      border: none;
+      cursor: pointer;
+      background-color: $font-color;
+      color: #fff;
+    }
+  }
+}
+
