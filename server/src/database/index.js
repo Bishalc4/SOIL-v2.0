@@ -1,0 +1,1 @@
+//review has a relationship with both product and user (many to many?)
