@@ -1,0 +1,22 @@
+module.exports = (sequelize, DataTypes) =>
+    sequelize.define("user", {
+      username: {
+        type: DataTypes.STRING(32),
+        primaryKey: true
+      },
+      password_hash: {
+        type: DataTypes.STRING(96),
+        allowNull: false
+      },
+      email: {
+        type: DataTypes.STRING(254), //https://www.lifewire.com/is-email-address-length-limited-1171110
+        allowNull: false
+      },
+      joinDate: {
+        type: DataTypes.DATE,
+        allowNull: false
+      }
+    }, {
+      // Don't add the timestamp attributes (updatedAt, createdAt).
+      timestamps: false
+    });  
