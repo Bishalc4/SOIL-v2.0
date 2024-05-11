@@ -18,5 +18,6 @@ module.exports = (sequelize, DataTypes) =>
       }
     }, {
       // Don't add the timestamp attributes (updatedAt, createdAt).
+      // Should the createdAt be used to store when the user created their account?
       timestamps: false
     });  
