@@ -12,6 +12,14 @@ module.exports = (sequelize, DataTypes) =>
         type: DataTypes.STRING(254), //https://www.lifewire.com/is-email-address-length-limited-1171110
         allowNull: false
       },
+      first_name: {
+        type: DataTypes.STRING(40),
+        allowNull: false
+      },
+      last_name: {
+        type: DataTypes.STRING(40),
+        allowNull: false
+      },
       joinDate: {
         type: DataTypes.DATE,
         allowNull: false
