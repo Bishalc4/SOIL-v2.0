@@ -13,10 +13,6 @@ module.exports = (sequelize, DataTypes) =>
         type: DataTypes.DECIMAL(20, 2),
         allowNull: false
       },
-      special_price: {
-        type: DataTypes.DECIMAL(20, 2),
-        allowNull: true
-      },
       category: {
         type: DataTypes.STRING(26),
         allowNull: false
