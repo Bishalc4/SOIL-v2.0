@@ -1,4 +1,3 @@
-//review has a relationship with both product and user (many to many?)
 const { Sequelize, DataTypes } = require("sequelize");
 const config = require("./config.js");
 
@@ -14,6 +13,14 @@ db.sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
 
 // Include models.
 db.user = require("./models/user.js")(db.sequelize, DataTypes);
+
+db.sync = async () => {
+  // Sync schema.
+  await db.sequelize.sync();
+
+  //seed function can be placed here
+};
+
 db.admin = require("./models/admin.js")(db.sequelize, DataTypes);
 db.cart = require("./models/cart.js")(db.sequelize, DataTypes);
 db.following = require("./models/following.js")(db.sequelize, DataTypes);
