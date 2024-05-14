@@ -21,16 +21,16 @@ db.review = require("./models/review.js")(db.sequelize, DataTypes);
 db.special = require("./models/special.js")(db.sequelize, DataTypes);
 
 //establish connections
-db.user.hasOne(db.cart);
-db.cart.belongsTo(db.user, { forgiegnKey: { name: "username", allowNull: false}});
-db.user.hasOne(db.admin);
-db.admin.belongsTo(db.user, { foreignKey: "username", allowNull: false });
-db.user.hasMany(db.review);
-db.review.belongsTo(db.user, { foreignKey: "username" });
-db.product.hasMany(db.review);
-db.review.belongsTo(db.product, { foreignKey: "producy_id" });
-db.product.hasOne(db.special_deal);
-db.special_deal.belongsTo(db.product, { foreignKey: 'Product_id' });
+// db.user.hasOne(db.cart);
+// db.cart.belongsTo(db.user, { forgiegnKey: { name: "username", allowNull: false}});
+// db.user.hasOne(db.admin);
+// db.admin.belongsTo(db.user, { foreignKey: "username", allowNull: false });
+// db.user.hasMany(db.review);
+// db.review.belongsTo(db.user, { foreignKey: "username" });
+// db.product.hasMany(db.review);
+// db.review.belongsTo(db.product, { foreignKey: "producy_id" });
+// db.product.hasOne(db.special_deal);
+// db.special_deal.belongsTo(db.product, { foreignKey: 'Product_id' });
 
 db.sync = async () => {
   // Sync schema.
