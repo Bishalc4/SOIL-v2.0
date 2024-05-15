@@ -1,7 +1,10 @@
 module.exports = (sequelize, DataTypes) =>
-    sequelize.define("cart", {
-        
-    }, {
-      // Don't add the timestamp attributes (updatedAt, createdAt).
-      timestamps: true
-    });  
+  sequelize.define("cart", {
+    cart_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+  }, {
+    timestamps: true
+  });
