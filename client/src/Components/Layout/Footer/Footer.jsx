@@ -29,9 +29,6 @@ function Footer() {
             <Link to="/cart">
               <p>Cart</p>
             </Link>
-            <Link to="/growityourself">
-              <p>Vegetabel Farming</p>
-            </Link>
         </div>
 
         <div className="helpful-link-column" id="footer-column">

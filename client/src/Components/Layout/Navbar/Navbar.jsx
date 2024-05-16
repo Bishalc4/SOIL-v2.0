@@ -22,11 +22,6 @@ function Navbar() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/growityourself">
-                            <span>Grow It Yourself</span>
-                        </Link>
-                    </li>
-                    <li>
                         <Link to="/about">
                             <span>About</span>
                         </Link>
