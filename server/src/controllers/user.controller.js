@@ -14,6 +14,16 @@ exports.one = async (req, res) => {
     res.json(user);
 };
 
+exports.login = async (req, res) => {
+    const user = await db.user.findByPk(req.query.username);
+  
+    if(user === null || await argon2.verify(user.password_hash, req.query.password) === false)
+      // Login failed.
+      res.json(null);
+    else
+      res.json(user);
+  };
+
 //create a user in the database
 exports.create = async (req, res) => {
     const hash = await argon2.hash(req.body.password, { type: argon2.argon2id });

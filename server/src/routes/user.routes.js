@@ -6,6 +6,8 @@ module.exports = (express, app) => {
 
     router.get("/select/:id", controller.one);
 
+    router.get("/login", controller.login);
+
     router.post("/", controller.create);
   
     // Add routes to server.
