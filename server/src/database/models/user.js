@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) =>
       },
       joinDate: {
         type: DataTypes.DATE,
-        allowNull: false
+        defaultValue: DataTypes.NOW
       }
     }, {
       // Don't add the timestamp attributes (updatedAt, createdAt).
