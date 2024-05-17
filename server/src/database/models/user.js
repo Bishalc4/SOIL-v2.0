@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) =>
         allowNull: false
       },
       joinDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING(40),
         allowNull: false
       }
     }, {
