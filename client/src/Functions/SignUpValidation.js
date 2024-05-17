@@ -3,8 +3,10 @@ function validate(values) {
     if(!values.username) {
         errors.username = 'Name is required'; }  //check if name field is empty
     
-    if (/\s/.test(values.username)) {
+    else if (/\s/.test(values.username)) {
         errors.username = 'username cannot contain spaces'; } // check if username contains spcaes
+    else if (values.username.length > 32) {
+        currentErrors[key] = "Username length cannot be greater than 32." };
 
     if (!values.email) {                 
         errors.email = 'Email address is required'; } //check if email field is empty
