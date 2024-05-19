@@ -1,5 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const config = require("./config.js");
+const special = require("./models/special.js");
+const product = require("./models/product.js");
 
 const db = {
   Op: Sequelize.Op
@@ -48,6 +50,7 @@ async function seedData() {
   let hash = await argon2.hash("abc123", { type: argon2.argon2id });
 
   await db.user.create({ username: "mbolger", password_hash: hash, email: "mbolger@gmail.com", first_name: "Matthew", last_name : "Bolger", joinDate: "2024-05-14 12:34:56"});
+  
   await db.product.create({ product_name: "Organic Banana", price: 0.70, category: "Fruits", imageUrl: "banana" });
   await db.product.create({ product_name: "Organic Cucumber", price: 1.20, category: "Vegetables", imageUrl: "cucumber" });
   await db.product.create({ product_name: "Organic Apple", price: 1.00, category: "Fruits", imageUrl: "apple" });
@@ -80,6 +83,8 @@ async function seedData() {
   await db.product.create({ product_name: "Organic Lentils", price: 2.50, category: "Grains", imageUrl: "lentils" });
   await db.product.create({ product_name: "Organic Chickpeas", price: 2.80, category: "Grains", imageUrl: "chickpeas" });
   await db.product.create({ product_name: "Organic Peas", price: 2.00, category: "Grains", imageUrl: "peas" });
+  
+  await db.special.create({ special_price: 1.89, product_id: 32});
 }
 
 module.exports = db;
