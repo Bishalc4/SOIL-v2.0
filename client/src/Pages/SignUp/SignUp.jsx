@@ -8,7 +8,7 @@ import "./SignUp.scss";
 function SignUp() {
     const navigate = useNavigate();
     const [values, setValues] = useState({
-        username: "", email: "", password: "", confirmPassword: "", firstname: "", lastname: ""
+        username: "", email: "", password: "", confirmPassword: ""
     });
     const [errors, setErrors] = useState({});
 
@@ -43,9 +43,7 @@ function SignUp() {
 
             alert("Thank you for joining our SOIL community");
             navigate("/");
-        } else {
-            alert("Error occurred during creation of account");
-        }
+        } 
     };
 
     const handleValidation = async (fields) => {

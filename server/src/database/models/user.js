@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) =>
       },
       first_name: {
         type: DataTypes.STRING(40),
-        allowNull: false
+        allowNull: true
       },
       last_name: {
         type: DataTypes.STRING(40),
-        allowNull: false
+        allowNull: true
       },
       joinDate: {
         type: DataTypes.DATE,
