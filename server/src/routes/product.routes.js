@@ -6,6 +6,10 @@ module.exports = (express, app) => {
 
   router.get("/select/:productID", controller.one);
 
+  router.get("/category/product/:productCategory", controller.findByCategory);
+
+  router.get("/category/specials/:productCategory", controller.findBySpecialsCategory);
+
   router.get("/specials", controller.allSpecials)
 
   // Add routes to server.
