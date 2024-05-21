@@ -26,6 +26,19 @@ exports.findAll = async (req, res) => {
     res.json(products);
 };
 
+//Get all products of a particular category
+exports.findByCategory = async (req, res) => {
+    console.log(req.params.productCategory);
+    const products = await db.product.findAll({
+        include: ["special"],
+        where: {
+            category: req.params.productCategory
+        }
+      });
+
+    res.json(products);
+}
+
 //Get all special products (only special products)
 exports.allSpecials = async (req, res) => {
   const specials = await db.product.findAll({
@@ -38,3 +51,19 @@ exports.allSpecials = async (req, res) => {
 
   res.json(specials);
 };
+
+//Get all special products (only special products) of a particular category
+exports.findBySpecialsCategory = async (req, res) => {
+    const specials = await db.product.findAll({
+        include: {
+          model: db.special,
+          as: "special",
+          required: true,
+        },
+        where: {
+            category: req.params.productCategory
+        }
+      });
+  
+    res.json(specials);
+  };
