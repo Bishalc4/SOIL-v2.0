@@ -1,11 +1,13 @@
 module.exports = (express, app) => {
-    const controller = require("../controllers/product.controller.js");
-    const router = express.Router();
-  
-    router.get("/", controller.all);
+  const controller = require("../controllers/product.controller.js");
+  const router = express.Router();
 
-    router.get("/select/:id", controller.one);
-  
-    // Add routes to server.
-    app.use("/api/products", router);
-  };
+  router.get("/", controller.findAll);
+
+  router.get("/select/:productID", controller.one);
+
+  router.get("/specials", controller.allSpecials)
+
+  // Add routes to server.
+  app.use("/api/products", router);
+};
