@@ -16,7 +16,6 @@ function Specials(){
 
             setSpecials(specials);
             setIsLoading(false);
-            console.log(specials);
         }
 
         loadTasks();
