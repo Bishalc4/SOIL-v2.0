@@ -4,10 +4,9 @@ import { Link } from "react-router-dom"
 import AddCartButton from '../AddCartButton/AddCartButton';
 
 function ProductCard(props) {
-    console.log(props.product.special);
     const productPrice = parseFloat(props.product.price).toFixed(2);
 
-    var productSpecialPrice = 0;
+    var productSpecialPrice = null;
     if (props.product.special !== null) {
         productSpecialPrice = parseFloat(props.product.special.special_price).toFixed(2)
     }
