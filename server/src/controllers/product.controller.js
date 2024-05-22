@@ -28,7 +28,6 @@ exports.findAll = async (req, res) => {
 
 //Get all products of a particular category
 exports.findByCategory = async (req, res) => {
-    console.log(req.params.productCategory);
     const products = await db.product.findAll({
         include: ["special"],
         where: {
