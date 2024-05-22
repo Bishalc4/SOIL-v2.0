@@ -23,9 +23,14 @@ db.cart_item = require("./models/cart_item.js")(db.sequelize, DataTypes);
 // Define associations
 db.product.hasOne(db.special, { as: "special", foreignKey: "product_id", });
 db.special.belongsTo(db.product, { foreignKey: "product_id", as: "product", });
+
+db.product.hasMany(db.review, { as: "review", foreignKey: "product_id"});
+db.review.belongsTo(db.product, { foreignKey: "product_id", as: "product" });
+
+db.user.hasMany(db.review, { as: "review", foreignKey: "username"})
+db.review.belongsTo(db.user, { foreignKey: "username", as: "user" });
+
 db.cart.belongsTo(db.user, { foreignKey: { name: "username", allowNull: false } });
-db.review.belongsTo(db.user, { foreignKey: { name: "username", allowNull: false } });
-db.review.belongsTo(db.product, { foreignKey: { name: "product_id", allowNull: false } });
 db.cart.belongsToMany(db.product, { through: db.cart_item, as: "products", foreignKey: 'cart_id' });
 db.product.belongsToMany(db.cart, { through: db.cart_item, as: "carts", foreignKey: 'product_id' });
 
@@ -92,6 +97,10 @@ async function seedData() {
   await db.special.create({ special_price: 9.99, product_id: 24});
   await db.special.create({ special_price: 9.5, product_id: 26});
   await db.special.create({ special_price: 2.4, product_id: 29});
+
+  await db.review.create({text: "Really high quality!", rating: 5, username: "mbolger",	product_id: 2});
+  await db.review.create({text: "This product sucks :(", rating: 1, username: "mbolger",	product_id: 12});
+  await db.review.create({text: "Great service and quick delivery. But fruit lacked :)", rating: 5, username: "mbolger",	product_id: 9});
 }
 
 module.exports = db;
