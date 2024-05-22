@@ -1,52 +1,40 @@
 import { useState, useEffect } from 'react';
+import { findAllProducts } from '../../data/product';
 import ProductCard from '../../Components/Layout/ProductCard/ProductCard';
 import images from '../../assets';
 import "./Browse.scss"
 
 function Browse() {
-    const [product, setProduct] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [products, setProducts] = useState([]);
+
+    const fetchProducts = () => {
+        async function loadTasks() {
+            const fetchedProducts = await findAllProducts();
+
+            setProducts(fetchedProducts);
+            setIsLoading(false);
+        }
+
+        loadTasks();
+    };
 
     useEffect(() => {
-        const storedProduct = JSON.parse(localStorage.getItem("products"));
-        if (storedProduct) {
-            setProduct(storedProduct);
-        }
+        fetchProducts();
     }, []);
 
     return(
         <div className="browse-container">
             <h1>Browse products by category</h1>
             <div className="products-grid-container">
-                <h2>Fruits</h2>
-                {product
-                    .filter(item => item.category === "Fruits")
-                    .map((item, index) => (
-                    <ProductCard key={index} product={item} image={images[item.imageUrl]} />
-                ))}
-                <h2 className='vegetables'>Vegetables</h2>
-                {product
-                    .filter(item => item.category === "Vegetables")
-                    .map((item, index) => (
-                    <ProductCard key={index} product={item} image={images[item.imageUrl]} />
-                ))}
-                <h2 className='dairies'>Dairy</h2>
-                {product
-                    .filter(item => item.category === "Dairy")
-                    .map((item, index) => (
-                    <ProductCard key={index} product={item} image={images[item.imageUrl]} />
-                ))}
-                <h2 className='meat'>Meat</h2>
-                {product
-                    .filter(item => item.category === "Meat")
-                    .map((item, index) => (
-                    <ProductCard key={index} product={item} image={images[item.imageUrl]} />
-                ))}
-                <h2 className='grains'>Grains</h2>
-                {product
-                    .filter(item => item.category === "Grains")
-                    .map((item, index) => (
-                    <ProductCard key={index} product={item} image={images[item.imageUrl]} />
-                ))}
+               {isLoading ? (
+                    <p>Loading...</p>
+                ) : (
+                    products
+                        .map((item, index) => (
+                            <ProductCard key={index} product={item} image={images[item.imageUrl]} />
+                        ))
+                )}
             </div>
         </div>
     );
