@@ -3,16 +3,32 @@
 const db = require("../database");
 
 // Select all reviews (for all products)
-exports.all = async (req, res) => {
+exports.findAll = async (req, res) => {
     const reviews = await db.review.findAll();
   
     res.json(reviews);
 };
 
-exports.oneProduct = async (req, res) => {
-    //return the reviews for one specific product
-};
+// Select all reviews for a particular product
+exports.findForProduct = async (req, res) => {
+    const reviews = await db.review.findAll({
+        include: ["product"],
+        where: {
+            product_id: req.params.product_id
+        }
+    });
 
-exports.oneUser = async (req, res) => {
-    //return the reviews for a specific user
-};
+    res.json(reviews);
+}
+
+// Select all reviews for a praticular user
+exports.findByUser = async (req, res) => {
+    const reviews = await db.review.findAll({
+        include: ["user"],
+        where: {
+            username: req.params.username
+        }
+    });
+
+    res.json(reviews);
+}
