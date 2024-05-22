@@ -4,14 +4,21 @@ import AddCartButton from '../../Components/Layout/AddCartButton/AddCartButton';
 
 function Product() {
     const location = useLocation();
-    console.log(location.state);
+
     const productImage = location.state.productImage;
-    const productName = location.state.product.productName;
+    const productName = location.state.product.product_name;
     const productPrice = parseFloat(location.state.product.price).toFixed(2);
-    var productSpecialPrice = location.state.product.specialPrice;
+
+    var productSpecialPrice = null;
+
+    if (location.state.product.special !== null) {
+        productSpecialPrice = location.state.product.special.special_price;
+    }
+
     if (productSpecialPrice !== null) {
         productSpecialPrice = parseFloat(productSpecialPrice).toFixed(2);
     }
+    
     const productSavedPrice = parseFloat(productPrice - productSpecialPrice).toFixed(2);
 
     return(
