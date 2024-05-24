@@ -8,7 +8,7 @@ exports.all = async (req, res) => {
 
 //create a cart in the database
 exports.create = async (req, res) => {
-    const cart = await db.user.create({
+    const cart = await db.cart.create({
       username: req.body.username,
     });
   

@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import AuthHeader from "../../Components/Layout/Auth-Header/AuthHeader";
 import { findUser, createUser } from "../../data/user";
+import { createCart } from "../../data/cart";
 import validate from "../../Functions/SignUpValidation";
 import "./SignUp.scss";
 
@@ -30,6 +31,7 @@ function SignUp() {
         const user = await createUser(values);
 
         if (user) {
+            await createCart(values.username);
             localStorage.setItem("user", JSON.stringify(values.username));
             const personalisedProfiles = JSON.parse(localStorage.getItem("profiles")) || []; // retrieve all existing users personalized profiles
             const userInitialProfile = {
