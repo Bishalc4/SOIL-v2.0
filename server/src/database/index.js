@@ -30,7 +30,9 @@ db.review.belongsTo(db.product, { foreignKey: "product_id", as: "product" });
 db.user.hasMany(db.review, { as: "review", foreignKey: "username"})
 db.review.belongsTo(db.user, { foreignKey: "username", as: "user" });
 
-db.cart.belongsTo(db.user, { foreignKey: { name: "username", allowNull: false } });
+db.user.hasOne(db.cart, { as: "cart", foreignKey: "username", });
+db.cart.belongsTo(db.user, { foreignKey: "username", as: "user", });
+
 db.cart.belongsToMany(db.product, { through: db.cart_item, as: "products", foreignKey: 'cart_id' });
 db.product.belongsToMany(db.cart, { through: db.cart_item, as: "carts", foreignKey: 'product_id' });
 
@@ -51,9 +53,10 @@ async function seedData() {
 
   const argon2 = require("argon2");
 
-  let hash = await argon2.hash("abc123", { type: argon2.argon2id });
+  let hash = await argon2.hash("Happy123$", { type: argon2.argon2id });
 
   await db.user.create({ username: "mbolger", password_hash: hash, email: "mbolger@gmail.com", first_name: "Matthew", last_name : "Bolger", joinDate: "2024-05-14 12:34:56"});
+  await db.cart.create({ username: "mbolger"});
 
   await db.product.create({ product_name: "Organic Banana", price: 0.70, category: "Fruits", imageUrl: "banana" });
   await db.product.create({ product_name: "Organic Cucumber", price: 1.20, category: "Vegetables", imageUrl: "cucumber" });
