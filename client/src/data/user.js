@@ -9,15 +9,14 @@ async function verifyUser(username, password) {
   const response = await axios.get(API_HOST + "/api/users/login", { params: { username, password } });
   const user = response.data;
   
-  // NOTE: In this example the login is also persistent as it is stored in local storage.
   if(user !== null)
     setUser(user);
 
   return user;
 }
 
-async function findUser(id) {
-  const response = await axios.get(API_HOST + `/api/users/select/${id}`);
+async function findUser(username) {
+  const response = await axios.get(API_HOST + `/api/users/select/${username}`);
 
   return response.data;
 }
@@ -28,8 +27,14 @@ async function createUser(user) {
   return response.data;
 }
 
+async function deleteUser(username) {
+    const response = await axios.delete(API_HOST + `/api/users/delete/${username}`);
 
-// --- Helper functions to interact with local storage --------------------------------------------
+    return response.data;
+}
+
+
+// --- Helper functions to store logged in user in localstorage --------------------------------------------
 function setUser(user) {
   localStorage.setItem(USER_KEY, JSON.stringify(user));
 }
@@ -44,5 +49,5 @@ function removeUser() {
 
 export {
   verifyUser, findUser, createUser,
-  getUser, removeUser
+  getUser, removeUser, deleteUser
 }
