@@ -1,5 +1,6 @@
 import { useNavigate} from "react-router-dom";
 import PropTypes from 'prop-types'
+import { getUser } from "../../../data/user"
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -7,7 +8,7 @@ function AddCartButton ( {productId} ) {
     const navigate = useNavigate();
 
     function handleClick() {
-        const user = JSON.parse(localStorage.getItem("user"));
+        const user = getUser();
 
         if (!user) {
             alert("To add to your cart, you'll need an account");
