@@ -18,10 +18,6 @@ module.exports = (sequelize, DataTypes) =>
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      unit_price: {
-        type: DataTypes.DECIMAL(20, 2),
-        allowNull: false
-      }
     }, {
       timestamps: false
     });
