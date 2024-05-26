@@ -10,7 +10,7 @@ async function verifyUser(username, password) {
   const user = response.data;
   
   if(user !== null)
-    setUser(user);
+    setUser(username);
 
   return user;
 }
@@ -49,5 +49,5 @@ function removeUser() {
 
 export {
   verifyUser, findUser, createUser,
-  getUser, removeUser, deleteUser
+  getUser, removeUser, deleteUser, setUser
 }

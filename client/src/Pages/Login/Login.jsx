@@ -2,7 +2,8 @@ import { Link,  useNavigate} from "react-router-dom"
 import { useState, useEffect} from'react'
 import AuthHeader from "../../Components/Layout/Auth-Header/AuthHeader"
 import validate from "../../Functions/LoginValidation"
-import { verifyUser } from "../../data/user"
+import { verifyUser, setUser } from "../../data/user"
+import{ setCart } from "../../data/cart"
 import "./Login.scss"
 
 //Users will use this page to login
@@ -21,16 +22,7 @@ function Login() {
         setError(validate(values));
 
         if (Object.keys(errors).length === 0 && (values.username !== "" && values.password !== "")) {
-                // const existingUsers = JSON.parse(localStorage.getItem("users")) || []; // reterive all existing users or assign to nothing if 'users' key is not there
-                // const existingUser = existingUsers.find(user => user.email === values.email && user.password === values.password); //check if inputted login detail matches with existing user
-    
-                // if (existingUser) {
-                //     localStorage.setItem("user", JSON.stringify(existingUser.username));
-                //     alert("Login successful");
-                //     navigate("/profile");
-                // } else {
-                //     alert("Account doesn't exit");
-                // }
+                
                 const user = await verifyUser(values.username, values.password);
     
                 if(user === null) {
@@ -40,7 +32,8 @@ function Login() {
                     return;
                   }
                 alert("Login successful");
-                localStorage.setItem("user", JSON.stringify(values.username));
+                await setUser(values.username);
+                await setCart(values.username);
                 navigate("/");
     
             }
@@ -68,11 +61,11 @@ function Login() {
                     <label className="login-label-control">Password</label>
                     <input type="password" className="login-input-control" placeholder='Enter Password' value={values.password} name='password' onChange={handleChange}/>
                     {errors.password && <p>{errors.password}</p>}
-                    {/* {errors.passwordLength && <p>{errors.passwordLength}</p>}
+                    {errors.passwordLength && <p>{errors.passwordLength}</p>}
                     {errors.passwordNumber && <p>{errors.passwordNumber}</p>}
                     {errors.passwordSpecialChar && <p>{errors.passwordSpecialChar}</p>}
                     {errors.passwordUppercase && <p>{errors.passwordUppercase}</p>}
-                    {errors.passwordLowercase && <p>{errors.passwordLowercase}</p>} */}
+                    {errors.passwordLowercase && <p>{errors.passwordLowercase}</p>}
                 </div>
 
                 <div className="login-form-group">
