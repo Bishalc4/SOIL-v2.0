@@ -1,9 +1,46 @@
 import { useLocation } from 'react-router-dom';
-import "./Product.scss"
+import { useState, useEffect } from 'react';
+import { findProductReviews } from '../../data/review';
+import ReviewForm from '../../Components/Layout/ReviewForm/ReviewForm';
+import ReviewCard from '../../Components/Layout/ReviewCard/ReviewCard';
 import AddCartButton from '../../Components/Layout/AddCartButton/AddCartButton';
+import "./Product.scss"
 
 function Product() {
     const location = useLocation();
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [reviews, setReviews] = useState([]);
+    const [average, setAverage] = useState(0);
+
+    const fetchReviews = () => {
+        async function loadReview() {
+            const fetchedReviews = await findProductReviews(location.state.product.product_id);
+            
+            setReviews(fetchedReviews);
+            setIsLoading(false);
+            reviewAverage(fetchedReviews);
+        }
+
+        loadReview();
+    };
+
+    useEffect(() => {
+        fetchReviews();
+    }, []);
+
+    const reviewAverage = (reviews) => {
+        if (reviews.length === 0) {
+            setAverage(0);
+            return; //return early if the review length is 0 (can't divide by 0)
+        }
+
+        //calculate the total number of "stars"  = the total rating for all reviews
+        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+        //divide by the actual number of reviews (taking the average)
+        const averageRating = totalRating/reviews.length
+        setAverage(averageRating.toFixed(1));
+    }
 
     const productImage = location.state.productImage;
     const productName = location.state.product.product_name;
@@ -48,6 +85,27 @@ function Product() {
                         )}
                         <AddCartButton productId={location.state.product.productId} className={`add-to-cart-btn ${productSpecialPrice !== null ? 'special' : 'original'}`} />
                     </div>
+                </div>
+            </div>
+            <div className="ratings-review-container">
+                <div className='row'>
+                    <h1>Reviews ({reviews.length})</h1>
+                    <h2>Average Rating: {average}</h2>
+                </div>
+                <div className='row'>
+                    <ReviewForm className="review-container"/>
+                </div>
+                <div className='row'>
+                    {isLoading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        reviews.map((item, index) => (
+                            <>
+                                <ReviewCard key={index} review={item} className="review-card"/>
+                                <br></br>
+                            </>
+                        ))
+                    )}
                 </div>
             </div>
         </div>

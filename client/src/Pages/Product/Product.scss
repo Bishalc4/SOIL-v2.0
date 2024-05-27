@@ -74,6 +74,35 @@
             }
         }
     }
+
+    .ratings-review-container{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        h1 {
+            margin: 0;
+        }
+
+        .row{
+            display: flex;
+            flex-direction: column;
+            width: 70%;
+            h3 {
+                margin: 0;
+            }
+    
+            .review-card{
+                width: 80%;
+            }
+
+            .review-container{
+                width: 80%;
+            }
+        }
+    }
+
     .product-about{
         text-align: left;
         padding-left: 3vw;
@@ -83,4 +112,5 @@
             font-size: 150%;
         }
     }
+    
 }
