@@ -106,6 +106,11 @@ async function seedData() {
   await db.cart_item.create({ cart_id: 1, product_id: 17, quantity: 1 });
 
   await db.review.create({text: "Really high quality!", rating: 5, username: "mbolger",	product_id: 2});
+  await db.review.create({text: "Yucky", rating: 1, username: "mbolger",	product_id: 2});
+  await db.review.create({text: "Fantastic", rating: 4, username: "mbolger",	product_id: 2});
+  await db.review.create({text: "Kinda average ngl :(", rating: 5, username: "mbolger",	product_id: 2});
+  await db.review.create({text: "I wanted to like it", rating: 2, username: "mbolger",	product_id: 2});
+  await db.review.create({text: "Nope from me dog", rating: 1, username: "mbolger",	product_id: 2});
   await db.review.create({text: "This product sucks :(", rating: 1, username: "mbolger",	product_id: 12});
   await db.review.create({text: "Great service and quick delivery. But fruit lacked :)", rating: 5, username: "mbolger",	product_id: 9});
 }
