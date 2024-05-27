@@ -32,3 +32,14 @@ exports.findByUser = async (req, res) => {
 
     res.json(reviews);
 }
+
+exports.createReview = async (req, res) => {
+    const review = await db.review.create({
+        text: req.text,
+        rating: req.rating,
+        username: req.username,
+        product_id: req.product_id
+    });
+
+    res.json(review);
+}
