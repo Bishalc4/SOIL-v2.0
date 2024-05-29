@@ -1,62 +1,60 @@
-import { useNavigate} from "react-router-dom";
-import PropTypes from 'prop-types'
-import { getUser } from "../../../data/user"
-import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { getUser } from "../../../data/user";
+import { getCartID, findCartItems, createCartItem, updateQuantity } from "../../../data/cart";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function AddCartButton ( {productId} ) {
+function AddCartButton({ productId }) {
     const navigate = useNavigate();
 
-    function handleClick() {
+    async function handleClick() {
         const user = getUser();
 
         if (!user) {
             alert("To add to your cart, you'll need an account");
             navigate("/login");
+            return;
         }
 
-        else {
-            const quantityCount = 1;
+        const quantityCount = 1;
+        const cartId = getCartID();
 
-            let existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+         let userCart = await findCartItems(cartId);
 
-            const userCart = existingCart.find(item => item.username === user);
-
-            if (userCart) {                                                // User exists in the cart
-                let productExist = false;                                  // check if product already exist 
-
-                for (let i = 0; i < userCart.data.length; i++) {
-                    if (userCart.data[i].productId === productId) {        // increment the quantity if product exist in user cart
-                        userCart.data[i].quantity += quantityCount;
-                        productExist = true;
-                        break;
-                    }
+        if (userCart) { // User has cart
+            let productExist = false; // Check if product already exists
+            for (let item of userCart) {
+                if (item.product_id === productId) { // Increment quantity if product exists
+                    item.quantity += quantityCount;
+                    productExist = true;
+                    await updateQuantity({ cart_id: cartId, product_id: productId, quantity: item.quantity });
+                    break;
                 }
-
-                if (!productExist) {
-                    userCart.data = [...userCart.data, { productId: productId, quantity: quantityCount }];
-                }
-            } 
-
-            else {
-                existingCart = [...existingCart, {username: user, data: [{ productId: productId, quantity: quantityCount }]}]; // User doesn't exist in the cart, add a new user cart
             }
 
-            localStorage.setItem("cart", JSON.stringify(existingCart));
-            window.dispatchEvent(new Event('userDataUpdated'));
-            toast.success("Product added to cart!");
+            if (!productExist) {
+                await createCartItem({ cart_id: cartId, product_id: productId, quantity: quantityCount });
+            }
+        } else { // User doesn't have items in the cart, add item
+            await createCartItem({ cart_id: cartId, product_id: productId, quantity: quantityCount });
         }
+
+        window.dispatchEvent(new Event('userDataUpdated'));
+        toast.success("Product added to cart!");
+
     }
 
     return (
         <>
             <button onClick={handleClick}>Add to cart</button>
-            <ToastContainer  closeButton={false} style={{ marginTop: '150px' }}/>
+            <ToastContainer closeButton={false} style={{ marginTop: '150px' }} />
         </>
     );
 }
-AddCartButton.propTypes = {
-    productId: PropTypes.number
-}
 
-export default AddCartButton
+AddCartButton.propTypes = {
+    productId: PropTypes.number.isRequired,
+};
+
+export default AddCartButton;
