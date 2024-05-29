@@ -146,16 +146,8 @@ exports.deleteUserReviews = (req, res) => {
     Review.destroy({
         where: {username: username}
     })
-        .then(num => {
-            if (num == 1) {
-                res.send({
-                    message: "Review was deleted successfully!"
-                });
-            } else {
-                res.send({
-                    message: `Cannot delete Review with username=${username}. Maybe username was not found!`
-                });
-            }
+        .then(nums => {
+            res.send({ message: `${nums} Reviews were deleted successfully!` })
         })
         .catch(err => {
             res.status(500).send({
