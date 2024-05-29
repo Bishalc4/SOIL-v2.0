@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import AddCartButton from '../AddCartButton/AddCartButton';
 
 function ProductCard(props) {
+    console.log(props.product);
     const productPrice = parseFloat(props.product.price).toFixed(2);
 
     var productSpecialPrice = null;
@@ -31,7 +32,7 @@ function ProductCard(props) {
                 <p>{productName}</p>
             </Link>
             <div className="cartButton-container" >
-            <AddCartButton productId={props.product.productId} />
+                <AddCartButton productId={props.product.product_id} />
             </div>
         </div>
     );
