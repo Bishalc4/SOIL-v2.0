@@ -42,6 +42,17 @@ async function createCartItem(detail) {
   return response.data;
 }
 
+async function findCartItems(cart_id) {
+  const response = await axios.get(API_HOST + `/api/carts/items/select/${cart_id}`);
+  return response.data;
+}
+
+async function updateQuantity(detail) {
+    const { cart_id, product_id, quantity } = detail;
+    const response = await axios.put(API_HOST + `/api/carts/items/${cart_id}/${product_id}`, { quantity });
+    return response.data;
+}
+
 // --- Helper functions to store cartID in user in localstorage --------------------------------------------
 function setCartID(cartID) {
   localStorage.setItem("cartID", JSON.stringify(cartID));
@@ -57,6 +68,6 @@ function removeCartID() {
 
 
 export {
-  createCart, findCart, deleteCart, 
-  setCart, setCartID, getCartID, removeCartID
+  createCart, findCart, deleteCart, findCartItems, updateQuantity,
+  setCart, setCartID, getCartID, removeCartID, createCartItem
 }
