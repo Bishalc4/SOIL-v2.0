@@ -44,6 +44,12 @@ exports.createReview = async (req, res) => {
     }
 
     //validate rating here
+    if (req.body.rating < 1 || req.body.rating > 5) {
+        res.status(400).send({
+            message: "Rating must be an integer from 1 to 5"
+        });
+        return;
+    }
 
     //Create a Review
     const review = await db.review.create({
@@ -117,11 +123,28 @@ exports.delete = (req, res) => {
 }
 
 //Delete a Review with the productID in the request
-exports.deleteAllProductReviews= (req, res) => {
+exports.deleteProductReviews = (req, res) => {
     const product_id = req.params.product_id;
 
     Review.destroy({
         where: {product_id: product_id}
+    })
+        .then(nums => {
+            res.send({ message: `${nums} Reviews were deleted successfully!` })
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Could not delete Review with product_id=" + product_id
+            });
+        });
+}
+
+//Delete a Review with the username in the request
+exports.deleteUserReviews = (req, res) => {
+    const username = req.params.username;
+
+    Review.destroy({
+        where: {username: username}
     })
         .then(num => {
             if (num == 1) {
@@ -130,13 +153,14 @@ exports.deleteAllProductReviews= (req, res) => {
                 });
             } else {
                 res.send({
-                    message: `Cannot delete Review with product_id=${product_id}. Maybe Review was not found!`
+                    message: `Cannot delete Review with username=${username}. Maybe username was not found!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Could not delete Review with product_id=" + product_id
+                message: "Could not delete Review for user=" + username
             });
         });
 }
+
