@@ -33,7 +33,19 @@ exports.findByUser = async (req, res) => {
     res.json(reviews);
 }
 
+// Create and Save a new Review
 exports.createReview = async (req, res) => {
+    //Validate review content
+    if (!req.body.text) {
+        res.status(400).send({
+            message: "Review text cannot be empty"
+        });
+        return; //return early due to invalid review
+    }
+
+    //validate rating here
+
+    //Create a Review
     const review = await db.review.create({
         text: req.text,
         rating: req.rating,
@@ -41,5 +53,90 @@ exports.createReview = async (req, res) => {
         product_id: req.product_id
     });
 
-    res.json(review);
+    //Save Review in the database
+    Review.create(review)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occured while creating the Review."
+            });
+        });
+};
+
+//Update a Review by the id in the request
+exports.update = (req, res) => {
+    const id = req.params.id;
+
+    Review.update(req.text, { //!also need to be able to update the rating
+        where: { id: id}
+    })
+        .then(num => {
+            if (num == 1) {
+                res.send({
+                    message: "Review was updated successfully."
+                });
+            } else {
+                res.send({
+                    message: `Cannot update Review with id=${id}. Maybe Review was not found or req.text is empty!`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: `Error updating Review with id=${id}`
+            })
+        });
+};
+
+//Delete a Review with the id in the request
+exports.delete = (req, res) => {
+    const id = req.params.id;
+
+    Review.destroy({
+        where: {id: id}
+    })
+        .then(num => {
+            if (num == 1) {
+                res.send({
+                    message: "Review was deleted successfully!"
+                });
+            } else {
+                res.send({
+                    message: `Cannot delete Review with id=${id}. Maybe Review was not found!`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Could not delete Review with id=" + id
+            });
+        });
+}
+
+//Delete a Review with the productID in the request
+exports.deleteAllProductReviews= (req, res) => {
+    const product_id = req.params.product_id;
+
+    Review.destroy({
+        where: {product_id: product_id}
+    })
+        .then(num => {
+            if (num == 1) {
+                res.send({
+                    message: "Review was deleted successfully!"
+                });
+            } else {
+                res.send({
+                    message: `Cannot delete Review with product_id=${product_id}. Maybe Review was not found!`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Could not delete Review with product_id=" + product_id
+            });
+        });
 }
