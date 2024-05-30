@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import validate from '../../Functions/CreditCardValidation';
 import validateAddress from '../../Functions/AdressValidation'
@@ -28,11 +28,11 @@ function CartCheckOut() {
     const [errors, setError] = useState({});
     function handleSubmit(e) {
         e.preventDefault();
-        const cardErrors = validate(values);
-        const addressErrors = validateAddress(shippingAddress);
+        const cardErrors = validate(values);                        // validating the card details
+        const addressErrors = validateAddress(shippingAddress);     //validating the address details
         setError({ ...cardErrors, ...addressErrors });
     
-        if (Object.keys(cardErrors).length === 0 && Object.keys(addressErrors).length === 0) {
+        if (Object.keys(cardErrors).length === 0 && Object.keys(addressErrors).length === 0) {      // if no errors, navigate to receipt page
             navigate("/receipt", { state: { price, cartData, shippingAddress } });
         }
     }

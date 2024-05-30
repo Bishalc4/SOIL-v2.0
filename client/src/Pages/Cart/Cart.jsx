@@ -1,78 +1,78 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import images from "../../assets";
 import emptyCart from "../../assets/EmptyCart.jpg"
+import { findAllProducts } from "../../data/product"
+import { getCartID, findCartItems, deleteItem, updateQuantity } from '../../data/cart';
 import "./Cart.scss";
 
 function Cart() {
     const navigate = useNavigate();
-
+    
     const [price, setPrice] = useState(0);
     const [cartData, setCartData] = useState([]);
+    const [productsList, setProductsList] = useState([]);
 
-    const productsList = JSON.parse(localStorage.getItem("products"));  // get the list of products from localStorage
-    const user = JSON.parse(localStorage.getItem("user"));   // get the logged in user
+    const cartId = getCartID();
 
-    // Retrieve cart data from local storage once
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const userCart = cart.find(item => item.username === user);
     useEffect(() => {
-        if (userCart) {                                    // if the user has a cart, get the cart data (productId and Quantity)
-            setCartData(userCart.data);
+        async function fetchProductsAndCart() {
+            try {
+                const products = await findAllProducts();       // fetching all the products from the database
+                setProductsList(products);
+
+                const userCart = await findCartItems(cartId);   // fetching all the cart items for the logged in user
+                if (userCart) {
+                    setCartData(userCart);
+                }
+            } catch (error) {
+                console.error("Failed to fetch products or cart items:", error);
+            }
         }
-    }, [user]);
+
+        fetchProductsAndCart();
+    }, [cartId]);
 
     function getProductById(productId) {
-        return productsList.find(product => product.productId === productId);    // get the product detail from productlist using the productId stored in cart
+        return productsList.find(product => product.product_id === productId);        // finding a product info based on productid
     }
 
-    function handleTotalPrice() {                                              // handle the total amount of the cart
+    useEffect(() => {
+        handleTotalPrice();      // whenever cart changes, update the total price
+    }, [cartData]);
+
+    function handleTotalPrice() {
         let total = 0;
         cartData.forEach(item => {
-            const product = getProductById(item.productId);
+            const product = getProductById(item.product_id);
             if (product) {
-                total += item.quantity * (product.specialPrice !== null ? product.specialPrice : product.price);
+                total += item.quantity * (product.special !== null ? product.special.special_price : product.price);      // calculating the total price
             }
         });
         setPrice(total);
-        window.dispatchEvent(new Event('userDataUpdated'));
+        window.dispatchEvent(new Event('userDataUpdated'));            // dispatching a event so cartbutton on the header can update
     }
 
-    useEffect(() => {
-        handleTotalPrice();
-    }, [cartData]);
 
-    function handleDelete(itemId) {      
-        const updatedCartData = cartData.filter(item => item.productId !== itemId);
+    async function handleDelete(itemId) {      
+        const updatedCartData = cartData.filter(item => item.product_id !== itemId);         // updating the state of the cartData when an item is deleted
         setCartData(updatedCartData);
-        const updatedCart = [...cart]; // Copy the cart array
-        const userCartIndex = updatedCart.findIndex(cartItem => cartItem.username === user);
-        if (userCartIndex >= 0) {
-            updatedCart[userCartIndex].data = updatedCartData;
-            localStorage.setItem("cart", JSON.stringify(updatedCart));
-        }
+        await deleteItem(cartId, itemId)
     }
 
-    function handleQuantityChange(productId, newQuantity) {
+    async function handleQuantityChange(productId, newQuantity) {
         if (newQuantity > 0) {
-            const updatedCart = [...cart]; // Copy the cart array
-            const userCartIndex = updatedCart.findIndex(cartItem => cartItem.username === user);
-            if (userCartIndex !== -1) {
-                const productToUpdate = updatedCart[userCartIndex].data.find(item => item.productId === productId);
-                if (productToUpdate) {
-                    productToUpdate.quantity = newQuantity;
-                    localStorage.setItem("cart", JSON.stringify(updatedCart));
-                }
-            }
+            await updateQuantity({ cart_id: cartId, product_id: productId, quantity: newQuantity });            // updating quantity in the backend
+
             const updatedCartData = cartData.map(item =>
-                item.productId === productId ? { ...item, quantity: newQuantity } : item
+                item.product_id === productId ? { ...item, quantity: newQuantity } : item
             );
             setCartData(updatedCartData);
         }
     }
 
     function handleSubmit() {
-        navigate("/checkout", { state: { price, cartData } }); 
+        navigate("/checkout", { state: { price, cartData } });        // when submitted go to checkout page
     }
 
     return (
@@ -89,18 +89,18 @@ function Cart() {
                 {cartData.map((item, index) => (
                     <div key={index} className="cart-container">
                         <div className='cart-detail'>
-                            <img src={images[getProductById(item.productId)?.imageUrl]} alt={getProductById(item.productId)?.productName} />
-                            <p>{getProductById(item.productId)?.productName}</p>
+                            <img src={images[getProductById(item.product_id)?.imageUrl]} alt={getProductById(item.product_id)?.product_name} />
+                            <p>{getProductById(item.product_id)?.product_name}</p>
                         </div>
                         <div className="quantity-buttons">
-                            <button onClick={() => handleQuantityChange(item.productId, item.quantity - 1)}> - </button>
+                            <button onClick={() => handleQuantityChange(item.product_id, item.quantity - 1)}> - </button>
                             <button>{item.quantity}</button>
-                            <button onClick={() => handleQuantityChange(item.productId, item.quantity + 1)}> + </button>
+                            <button onClick={() => handleQuantityChange(item.product_id, item.quantity + 1)}> + </button>
                         </div>
                         <div className="price-and-delete">
-                            <span>${getProductById(item.productId)?.specialPrice !== null ? getProductById(item.productId)?.specialPrice.toFixed(2) 
-                            : getProductById(item.productId)?.price.toFixed(2)}</span>
-                            <button onClick={() => handleDelete(item.productId)}>Delete</button>
+                            <span>${getProductById(item.product_id)?.special !== null ? getProductById(item.product_id)?.special.special_price
+                            : getProductById(item.product_id)?.price}</span>
+                            <button onClick={() => handleDelete(item.product_id)}>Delete</button>
                         </div>
                     </div>
                 ))}
