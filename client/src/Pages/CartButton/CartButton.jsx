@@ -1,27 +1,47 @@
 import { useState, useEffect } from 'react';
 import { BsCart3 } from "react-icons/bs";
+import { findAllProducts } from "../../data/product"
+import { getCartID, findCartItems, } from '../../data/cart';
 import "./CartButton.scss";
 
 function CartButton() {
   const [totalPrice, setTotalPrice] = useState(0);
+  const [cartData, setCartData] = useState([]);
+  const [productsList, setProductsList] = useState([]);
 
+  const cartId = getCartID();
+
+  useEffect(() => {
+        async function fetchProductsAndCart() {
+            try {
+                const products = await findAllProducts();
+                setProductsList(products);
+
+                const userCart = await findCartItems(cartId);
+                if (userCart) {
+                    setCartData(userCart);
+                }
+            } catch (error) {
+                console.error("Failed to fetch products or cart items:", error);
+            }
+        }
+
+        fetchProductsAndCart();
+    }, []);
+  
   function getProductById(productId) {
-    const productsList = JSON.parse(localStorage.getItem("products")) || [];
-    return productsList.find(product => product.productId === productId);
+        return productsList.find(product => product.product_id === productId); 
   }
+
 
   useEffect(() => {
     const updateTotalPrice = () => {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const user = JSON.parse(localStorage.getItem("user"));
-      const userCart = cart.find(item => item.username === user);
-
       let total = 0;
-      if (userCart) {
-        userCart.data.forEach(item => {
-          const product = getProductById(item.productId);
+      if (cartData) {
+        cartData.forEach(item => {
+          const product = getProductById(item.product_id);
           if (product) {
-            total += item.quantity * (product.specialPrice !== null ? product.specialPrice : product.price);
+                total += item.quantity * (product.special !== null ? product.special.special_price : product.price);
           }
         });
       }
@@ -33,7 +53,7 @@ function CartButton() {
     // Update total price whenever there's a change in cart of user data
     window.addEventListener('userDataUpdated', updateTotalPrice);
 
-  }, []); 
+  }, [cartData]); 
 
   return (
     <div>
