@@ -43,7 +43,7 @@ function SignUp() {
 
             localStorage.setItem("profiles", JSON.stringify(updatedProfiles)); // storing empty personalized profiles for later use  
 
-            alert("Thank you for joining our SOIL community");
+            alert("Welcome " + values.username);
             navigate("/");
         } 
     };

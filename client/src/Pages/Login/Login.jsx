@@ -31,7 +31,7 @@ function Login() {
                     alert("Username/password invalid, please try again.");
                     return;
                   }
-                alert("Login successful");
+                alert("Welcome " + values.username);
                 await setUser(values.username);
                 await setCart(values.username);
                 navigate("/");
