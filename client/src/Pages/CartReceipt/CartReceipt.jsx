@@ -1,21 +1,30 @@
-import React from 'react';
+import {useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { findAllProducts } from "../../data/product"
+import { getCartID, deleteCartItems } from '../../data/cart';
 import logo from '../../assets/LogoNoText.svg'
 import './CartReceipt.scss';
 
 function CartReceipt() {
     const location = useLocation();
-    const { price , cartData, shippingAddress } = location.state;
-    const user = JSON.parse(localStorage.getItem("user"));           // get current logged in user
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];    // get current cart
+    const { price, cartData, shippingAddress } = location.state;
+    const cartID = getCartID();
 
-    const productsList = JSON.parse(localStorage.getItem("products"));  // get the list of products from local storage
+    const [productsList, setProductsList] = useState([]);
 
-    function getProductById (productId) {
-        return productsList.find(product => product.productId === productId);    // get the product detail from productlist using the productId stored in cart
+    useEffect(() => {
+        async function fetchProductsAndDeleteCart() {
+            const products = await findAllProducts();       // fetching all the products from the database
+            setProductsList(products);
+            await deleteCartItems(cartID);                // deleting all the cart items for the logged in user after successful purchase
+        }
+
+        fetchProductsAndDeleteCart();
+    }, [cartID]);
+
+    function getProductById(productId) {
+        return productsList.find(product => product.product_id === productId);   // finding a product info based on productid
     }
-    const updatedCart = cart.filter(item => item.username !== user);  // removing user cart from localstorage after successful purchase
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
 
     return (
         <div className="receipt-container">
@@ -39,9 +48,9 @@ function CartReceipt() {
                 {cartData.map((item, index) => (
                     <div key={index} className="product-item">
                         <p>{item.quantity}</p>
-                        <p>{getProductById(item.productId)?.productName}</p>
-                        <p>${getProductById(item.productId)?.specialPrice !== null ? getProductById(item.productId)?.specialPrice.toFixed(2) 
-                        : getProductById(item.productId)?.price.toFixed(2)}</p>
+                        <p>{getProductById(item.product_id)?.product_name}</p>
+                        <p>${getProductById(item.product_id)?.special !== null ? getProductById(item.product_id)?.special.special_price
+                            : getProductById(item.product_id)?.price}</p>
                     </div>
                 ))}
             </div>
