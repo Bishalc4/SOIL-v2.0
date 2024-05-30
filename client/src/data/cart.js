@@ -24,17 +24,26 @@ async function setCart(username) {
 }
 
 async function findCart(id) {
-    const response = await axios.get(API_HOST + `/api/carts/select/${id}`);
+  const response = await axios.get(API_HOST + `/api/carts/select/${id}`);
   
     return response.data;
 }
 
 async function deleteCart(id) {
-    const response = await axios.delete(API_HOST + `/api/carts/delete/${id}`);
+  const response = await axios.delete(API_HOST + `/api/carts/delete/${id}`);
 
     return response.data;
 }
 
+async function deleteCartItems(id) {
+  const response = await axios.delete(API_HOST + `/api/carts/items/delete/${id}`);
+
+    return response.data;
+}
+
+async function deleteItem(cart_id, product_id) {
+  const response = await axios.delete(API_HOST + `/api/carts/items/delete/${cart_id}/${product_id}`);
+}
 
 async function createCartItem(detail) {
   const response = await axios.post(API_HOST + "/api/carts/items", detail);
@@ -68,6 +77,6 @@ function removeCartID() {
 
 
 export {
-  createCart, findCart, deleteCart, findCartItems, updateQuantity,
-  setCart, setCartID, getCartID, removeCartID, createCartItem
+  createCart, findCart, deleteCart, findCartItems, updateQuantity, deleteCartItems,
+  setCart, setCartID, getCartID, removeCartID, createCartItem, deleteItem
 }
