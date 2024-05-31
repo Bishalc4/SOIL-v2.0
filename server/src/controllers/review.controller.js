@@ -22,10 +22,6 @@ exports.findForProduct = async (req, res) => {
 }
 // Select a review for a particular review id
 exports.findByReviewId = async (req, res) => {
-    // const review = await db.review.findByPk(req.params.review_id);
-
-    // res.json(review);
-
     try{
         const review = await db.review.findByPk(req.params.review_id);
 
@@ -37,14 +33,6 @@ exports.findByReviewId = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "An error occurred" });
     }
-
-    // db.review.findByPk(req.params.id)
-    //     .then(review => {
-    //         res.json(review);
-    //     })
-    //     .catch (error =>  {
-    //     res.status(500).json({ message: "Some error occurred while retrieving a review." });
-    //     })
 }
 
 // Select all reviews for a praticular user
@@ -102,7 +90,7 @@ exports.createReview = async (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    db.review.update( { text: req.body.text, rating: req.body.rating }, { //!also need to be able to update the rating
+    db.review.update( { text: req.body.text, rating: req.body.rating }, {
         where: { review_id: id }
     })
         .then(num => {
