@@ -93,7 +93,7 @@ function Product() {
                     <h2>Average Rating: {average}</h2>
                 </div>
                 <div className='row'>
-                    <ReviewForm className="review-container"/>
+                    <ReviewForm className="review-container" product_id={location.state.product.product_id}/>
                 </div>
                 <div className='row'>
                     {isLoading ? (
