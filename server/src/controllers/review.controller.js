@@ -20,6 +20,32 @@ exports.findForProduct = async (req, res) => {
 
     res.json(reviews);
 }
+// Select a review for a particular review id
+exports.findByReviewId = async (req, res) => {
+    // const review = await db.review.findByPk(req.params.review_id);
+
+    // res.json(review);
+
+    try{
+        const review = await db.review.findByPk(req.params.review_id);
+
+        if (review) {
+            res.json(review);
+        } else {
+            res.status(404).json({ error: "Review not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ error: "An error occurred" });
+    }
+
+    // db.review.findByPk(req.params.id)
+    //     .then(review => {
+    //         res.json(review);
+    //     })
+    //     .catch (error =>  {
+    //     res.status(500).json({ message: "Some error occurred while retrieving a review." });
+    //     })
+}
 
 // Select all reviews for a praticular user
 exports.findByUser = async (req, res) => {
@@ -52,15 +78,15 @@ exports.createReview = async (req, res) => {
     }
 
     //Create a Review
-    const review = await db.review.create({
-        text: req.text,
-        rating: req.rating,
-        username: req.username,
-        product_id: req.product_id
-    });
+    const review = {
+        text: req.body.text,
+        rating: req.body.rating,
+        username: req.body.username,
+        product_id: req.body.product_id
+    }
 
     //Save Review in the database
-    Review.create(review)
+    db.review.create(review)
         .then(data => {
             res.send(data);
         })
@@ -76,8 +102,8 @@ exports.createReview = async (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    Review.update(req.text, { //!also need to be able to update the rating
-        where: { id: id}
+    db.review.update( { text: req.body.text, rating: req.body.rating }, { //!also need to be able to update the rating
+        where: { review_id: id }
     })
         .then(num => {
             if (num == 1) {
@@ -100,9 +126,10 @@ exports.update = (req, res) => {
 //Delete a Review with the id in the request
 exports.delete = (req, res) => {
     const id = req.params.id;
+    console.log("message");
 
-    Review.destroy({
-        where: {id: id}
+    db.review.destroy({
+        where: {review_id: id}
     })
         .then(num => {
             if (num == 1) {
