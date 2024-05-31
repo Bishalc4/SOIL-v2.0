@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const db = require("../database");
 const argon2 = require("argon2");
 
@@ -58,3 +59,27 @@ exports.create = async (req, res) => {
   
     res.json(user);
 };
+
+exports.update = async (req, res) => {
+  const username = req.params.username;
+
+  db.user.update({ first_name: req.body.first_name, last_name: req.body.last_name }, {
+    where: { username: username}
+  })
+    .then(num => {
+      if (num == 1) {
+          res.send({
+              message: "User information was update successfully!"
+          });
+      } else {
+          res.send({
+              message: `Cannot update User with username=${db.user}. Maybe User was not found!`
+          });
+      }
+  })
+  .catch(err => {
+      res.status(500).send({
+          message: "Could not delete User with username=" + username
+      });
+  });
+}

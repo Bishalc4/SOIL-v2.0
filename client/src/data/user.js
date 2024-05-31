@@ -28,9 +28,14 @@ async function createUser(user) {
 }
 
 async function deleteUser(username) {
-    const response = await axios.delete(API_HOST + `/api/users/delete/${username}`);
+  const response = await axios.delete(API_HOST + `/api/users/delete/${username}`);
 
-    return response.data;
+  return response.data;
+}
+
+async function updateUser(username, first_name, last_name) {
+  const response = await axios.put(API_HOST + `/api/users/select/${username}`, { first_name, last_name });
+  return response.data;
 }
 
 
@@ -49,5 +54,6 @@ function removeUser() {
 
 export {
   verifyUser, findUser, createUser,
-  getUser, removeUser, deleteUser, setUser
+  getUser, removeUser, deleteUser,
+  setUser, updateUser
 }

@@ -2,15 +2,23 @@ module.exports = (express, app) => {
     const controller = require("../controllers/user.controller.js");
     const router = express.Router();
   
-    router.get("/", controller.all);  // select all users.
+    // select all users
+    router.get("/", controller.all);
 
-    router.get("/select/:username", controller.one);  // Select a single user with id.
+    // Create a new user
+    router.post("/", controller.create);
 
-    router.get("/login", controller.login);      // Select one user from the database if username and password are a match.
+    // Select a single user with username
+    router.get("/select/:username", controller.one);
 
-    router.post("/", controller.create);        //  Create a new user.
+    // Update a user with username
+    router.put("/select/:username", controller.update);
 
-    router.delete("/delete/:username", controller.delete);      // Delete a user with username
+    // Select one user from the database if username and password are a match.
+    router.get("/login", controller.login);
+
+    // Delete a user with username
+    router.delete("/delete/:username", controller.delete);
   
     // Add routes to server.
     app.use("/api/users", router);
