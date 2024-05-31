@@ -1,0 +1,41 @@
+.delete-pop-up-container{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20vw;
+    background: #292828;
+    color: white;
+    padding: 1.5%;
+    z-index: 2;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding-top: 2%;
+
+    h2{
+        margin: 0;
+    }
+
+    .delete-btns{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        margin-top: 12%;
+
+        button{
+            border: none;
+            border-radius: 20px;
+            color: white;
+            background-color: transparent;
+            padding: 3%;
+            cursor: pointer;
+            margin-right: 2%;
+        }
+
+        button:hover{
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+    }
+}
