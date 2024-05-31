@@ -11,6 +11,9 @@ module.exports = (express, app) => {
   //update a Review with id
   router.put("/:id", controller.update);
 
+  //get a review for a particular review id
+  router.get("/select/:review_id", controller.findByReviewId);
+
   //delete a Review with id
   router.delete("/:id", controller.delete);
 
