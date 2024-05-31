@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { findUser, updateUser } from '../../data/user';
 import { ToastContainer, toast } from 'react-toastify';
 import DeleteAccountPopUp from '../../Components/Layout/DeleteAccountPopUp/DeleteAccountPopUp';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,34 +8,45 @@ import "./EditProfile.scss"
 
 function EditProfile() {
     const navigate = useNavigate();
+
     const currUser = JSON.parse((localStorage.getItem("user")));
-    const users = localStorage.getItem("users");
-    var usersArray = JSON.parse(users);
-    
-    let currUserAccount = null;
-    let userAccountIndex = 0;
-    for (const user of usersArray) {
-        if (user.username === currUser) {
-            currUserAccount = user;
-            break;
-        }
-        userAccountIndex++;
-    }
 
     const [showPopup, setShowPopup] = useState(false);
+
+    //replace with a profile object -- instead -- better readability
+    const [originalProfile, setOriginalProfile] = useState({});
+    const [userProfile, setUserProfile] = useState({});
+
+    const fetchProfile = () => {
+        async function loadProfile() {
+            const profile = await findUser(currUser);
+            setOriginalProfile(profile);
+            setUserProfile(profile)
+        }
+
+        loadProfile();
+    };
+
+    useEffect(() => {
+        fetchProfile();
+    }, []);
+
 
     const handleClick = () => {
         setShowPopup(true);
     };
 
     const resetChanges = () => {
-        setUserDetails({
-            username: currUserAccount.username,
-            email: currUserAccount.email,
-            firstName: currUserAccount.firstName,
-            lastName: currUserAccount.lastName
-        });
+        setUserProfile(originalProfile);
     };
+
+    function handleFirstNameChange(e) {
+        setUserProfile({...userProfile, first_name: e.target.value.replace(/\s/g, '')});
+    }
+
+    function handleLastNameChange(e) {
+        setUserProfile({...userProfile, last_name: e.target.value.replace(/\s/g, '')});
+    }
 
     //react toastify messages
     const profileChange = () => toast("Profile details changed!");
@@ -49,28 +61,11 @@ function EditProfile() {
     const passwordNavigation = (e) => {
         e.preventDefault();
         navigate("/changepassword");
-};
-    
-    const [userDetails, setUserDetails] = useState({username: currUserAccount.username,
-                                                    email: currUserAccount.email,
-                                                    firstName: currUserAccount.firstName,
-                                                    lastName: currUserAccount.lastName
-                                                    });
-    
-    function handleFirstNameChange(e) {
-        setUserDetails({...userDetails, firstName: e.target.value.replace(/\s/g, '')});
-    }
-
-    function handleLastNameChange(e) {
-        setUserDetails({...userDetails, lastName: e.target.value.replace(/\s/g, '')});
-    }
+    };
 
     function handleAccountSaveChanges(e) {
         e.preventDefault();
-        usersArray[userAccountIndex].email = userDetails.email;
-        usersArray[userAccountIndex].firstName = userDetails.firstName;
-        usersArray[userAccountIndex].lastName = userDetails.lastName;
-        localStorage.setItem("users", JSON.stringify(usersArray));
+        updateUser(currUser, userProfile.first_name, userProfile.last_name);
         profileChange();
     }
 
@@ -79,14 +74,14 @@ function EditProfile() {
             <h1>Edit profile</h1>
             <form className="account-details-form" onSubmit={handleAccountSaveChanges}>
                 <div className="username-group">
-                    <input value={userDetails.username} onClick={usernameChange} readOnly></input>
+                    <input value={userProfile.username} onClick={usernameChange} readOnly></input>
                 </div>
                 <div className="name-container">
-                    <input value={userDetails.firstName} onChange={handleFirstNameChange} placeholder='First name' required></input>
-                    <input value={userDetails.lastName} onChange={handleLastNameChange} placeholder='Last name' required></input>
+                    <input value={userProfile.first_name} onChange={handleFirstNameChange} placeholder='First name' required></input>
+                    <input value={userProfile.last_name} onChange={handleLastNameChange} placeholder='Last name' required></input>
                 </div>
                 <div className="email-group">
-                    <input type="email" value={userDetails.email} onClick={emailChange} readOnly></input>
+                    <input type="email" value={userProfile.email} onClick={emailChange} readOnly></input>
                 </div>
                 <div className='form-buttons-container'>
                     <button className='cancelBtn' onClick={cancelChanges}>Cancel</button>
