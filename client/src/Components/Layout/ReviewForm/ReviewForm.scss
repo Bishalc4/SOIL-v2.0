@@ -1,6 +1,82 @@
 .review-form-container{
-    background-color: rgb(224, 223, 223);
-    border-radius: 20px;
-    height: 15vh;
-    margin-bottom: 3vh;
+    height: 33vh;
+    display: flex;
+    flex-direction: row;
+
+    .profile-image-container{
+        width: 5%;
+        margin: 0;
+        display: flex;
+        align-items: flex-start;
+        margin-right: 2%;
+
+        img{
+            width: 100%;
+            border-radius: 50%;
+            box-sizing: border-box;
+        }
+    }
+
+    .review-input-container{
+        width: 95%;
+        align-items: flex-start;
+
+        #posting-publicly-container{
+            color: rgb(85, 84, 84);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 1.5%;
+
+            h4{
+                margin: 0;
+                margin-right: .1%;
+            }
+        }
+
+        .star-rating-container{
+            height: 6vh;
+
+            .star{
+                color: #E5C300;
+                width: auto;
+                height: 50%;
+            }
+        }
+
+        h2{
+            margin: 0;
+        }
+
+        .review-date{
+            font-size: 65%;
+        }
+
+        .review-input{
+            width: 90%;
+            background-color: #f4f4f4;
+            border: 1px solid black;
+            border-radius: 5px;
+            height: 10vh;
+            padding: 10px;
+            resize: vertical;
+        }
+
+        .review-buttons-container{
+            margin-top: 3%;
+            width: 92%;
+            display: flex;
+            justify-content: flex-end;
+
+            #post-btn{
+                background-color: #292828;
+                border: none;
+                border-radius: 15px;
+                padding: .7%;
+                color: white;
+                width: 10%;
+                cursor: pointer;
+            }
+        }
+    }
 }
