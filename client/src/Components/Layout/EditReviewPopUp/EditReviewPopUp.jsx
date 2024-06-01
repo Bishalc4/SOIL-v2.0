@@ -1,14 +1,17 @@
-import ProfileAvatar from "../../../assets/ProfileAvatar.png";
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { findByReviewID, updateReview } from "../../../data/review";
+import { ReviewsContext } from "../../../Pages/Product/Product";
 import "./EditReviewPopUp.scss"
 
 function EditReviewPopUp({ onClose, id }) {
 
     const text = "";
     const rating = 3;
+
+    const updateParent = useContext(ReviewsContext);
+    console.log(updateParent)
 
     const [reviewText, setReviewText] = useState(text);
     const [reviewRating, setReviewRating] = useState(rating);
@@ -45,8 +48,8 @@ function EditReviewPopUp({ onClose, id }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        updateReview(id, reviewText, reviewRating);
+        await updateReview(id, reviewText, reviewRating);
+        updateParent();
         onClose();
     }
 
