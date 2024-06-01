@@ -1,49 +1,50 @@
-import { useState, useEffect } from "react";
-import { useNavigate} from "react-router-dom"
-import "./ChangePassword.scss"
-import validate from "../../Functions/ChangePasswordValidation"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getUser, updatePassword } from "../../data/user";
+import "./ChangePassword.scss";
+import validate from "../../Functions/ChangePasswordValidation";
 
 function ChangePassword() {
     const navigate = useNavigate();
-
+    const user = getUser();
 
     const [values, setValues] = useState({
         currPassword: '',
         password: '',
         confirmPassword: ''
-     })
-     
-    const [errors, setError] = useState({});
+    });
+    
+    const [errors, setErrors] = useState({});
 
-    function handleChange(e) {
-        setValues({...values, [e.target.name]: e.target.value})
-     }
+    const handleChange = (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
+    };
 
-    function handleSubmit(e) {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(validate(values));
-    }
-    useEffect(() => {
-        if (
-            Object.keys(errors).length === 0 &&
-            values.currPassword !== "" &&
-            values.password !== "" &&
-            values.confirmPassword !== ""
-        ) {
-            const currUser = JSON.parse(localStorage.getItem("user"));
-            const users = JSON.parse(localStorage.getItem("users"));
-            const userIndex = users.findIndex(user => user.username === currUser);
 
-            if (userIndex >= 0) {
-            users[userIndex].password = values.password;
-            localStorage.setItem("users", JSON.stringify(users));
+        const trimmedValues = trimFields(values);
+        const validationErrors = validate(trimmedValues);
+        setErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length === 0) {
+            const response = await updatePassword(user, trimmedValues.currPassword, trimmedValues.password);
+            if (response) {
+                alert("Change password successful");
+                navigate("/profile");
+            } else {
+                alert("Current password incorrect");
+                navigate("/profile");
             }
-
-            alert("Change password successful");
-            navigate("/profile");
         }
-    }, [errors]);
+    };
 
+    const trimFields = (fields) => {
+        const trimmedFields = {};
+        Object.keys(fields).forEach(key => trimmedFields[key] = fields[key].trim());
+        setValues(trimmedFields);
+        return trimmedFields;
+    };
     return (
     <>
         <div className="password-container">
@@ -84,3 +85,4 @@ function ChangePassword() {
 }
 
 export default ChangePassword
+
