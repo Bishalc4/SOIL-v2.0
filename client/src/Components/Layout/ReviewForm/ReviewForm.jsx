@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ProfileAvatar from "../../../assets/ProfileAvatar.png"
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
@@ -6,21 +6,52 @@ import { HiInformationCircle } from "react-icons/hi";
 import { createReview } from '../../../data/review.js';
 import "./ReviewForm.scss"
 
-function ReviewForm({product_id}) {
+function ReviewForm({updateParentState, product_id}) {
     const [reviewText, setReviewText] = useState("");
+    const [rating, setRating] = useState(0);
+
+    //stores each star as either 'true' or 'false' depending on if it being hovered over
+    const [stars, setStars] = useState(new Array(5).fill(false));
+
+    //sets all of the elements from [0-index] to true
+    const handleMouseEnter = (index) => {
+        var newHovered = [];
+        for (let i = 0; i < 5; i++) {
+            if (i <= index) {
+                newHovered.push(true);
+            } else {
+                newHovered.push(false);
+            }
+        }
+
+        setStars(newHovered);
+        return newHovered;
+    };
+    
+    //set the stars array back to its default (all 'false')
+    const handleMouseLeave = () => {
+        setStars(new Array(5).fill(false));
+    };
+
+    const handleMouseClick = (index) => {
+        setRating(index+1);
+    }
+
+    //renders the stars based on the "stars" useState variable
+    const renderDivs = () => {
+        const starContainer = [];
+
+        for (let i = 0; i < 5; i++) {
+            if (stars[i] === true) {
+                starContainer.push(<FaStar key={i} className={`star hovered`} onMouseEnter={() => handleMouseEnter(i)} onMouseLeave={handleMouseLeave} onClick={() => handleMouseClick(i)} />)
+            } else {
+                starContainer.push(<FaRegStar key={i} className={`star`} onMouseEnter={() => handleMouseEnter(i)} onMouseLeave={handleMouseLeave} />)
+            }
+        }
+        return starContainer;
+    };
 
     const currUser = JSON.parse((localStorage.getItem("user")));
-
-    const rating = 4;
-    const stars = [];
-
-    for (let i = 0; i < 5; i++) {
-        if (i < rating) {
-            stars.push(<FaStar className="star"/>);
-        } else {
-            stars.push(<FaRegStar className="star"/>);
-        }
-    }
 
     function handleReviewInput(e) {
         setReviewText(e.target.value);
@@ -33,6 +64,7 @@ function ReviewForm({product_id}) {
             const newReview = { text: reviewText, rating: rating, username: currUser, product_id: product_id};
             await createReview(newReview);
             setReviewText("");
+            updateParentState('Updated State from Child');
         } catch (error) {
             console.error("Error posting review:", error);
         }
@@ -50,7 +82,7 @@ function ReviewForm({product_id}) {
                         <HiInformationCircle id="information-icon"/>
                     </div>
                     <div className="star-rating-container">
-                        {stars}
+                        {renderDivs()}
                     </div>
                     <form onSubmit={handleSubmit}>
                         <textarea
