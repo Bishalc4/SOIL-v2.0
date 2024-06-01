@@ -1,4 +1,7 @@
 import { useNavigate } from 'react-router-dom'
+import { getUser, removeUser, deleteUser } from '../../../data/user';
+import { getCartID, removeCartID, deleteCart, deleteCartItems } from '../../../data/cart';
+import {  deleteUserAllReviews } from '../../../data/review';
 import "./DeleteAccountPopUp.scss"
 
 // eslint-disable-next-line react/prop-types
@@ -7,12 +10,9 @@ function DeleteAccountPopUp({onClose}) {
 
     //gets each key from the local storage and removes the currUser from it
     //this is important as our local storage is able to handle multiple users and is not limited to one user
-    function deleteAccount() {
-        const user = JSON.parse(localStorage.getItem("user"));
-
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        const updateUsers = users.filter(item => item.username !== user);
-        localStorage.setItem("users", JSON.stringify(updateUsers));
+    async function deleteAccount() {
+        const user = getUser();
+        const cartID = getCartID();
 
         const macros = JSON.parse(localStorage.getItem("macros")) || [];
         const updateMacros = macros.filter(item => item.username !== user);
@@ -24,14 +24,15 @@ function DeleteAccountPopUp({onClose}) {
 
         const profiles = JSON.parse(localStorage.getItem("profiles")) || [];
         const updateProfiles = profiles.filter(item => item.username !== user);
-        localStorage.setItem("profiles", JSON.stringify(updateProfiles));
+        localStorage.setItem("profiles", JSON.stringify(updateProfiles));         // updating the personalised profile (hd assignment1)
 
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const updateCart = cart.filter(item => item.username !== user);
-        localStorage.setItem("cart", JSON.stringify(updateCart));
+        await deleteCartItems(cartID);
+        await deleteCart(cartID);
+        await deleteUserAllReviews(user);
+        await deleteUser(user);
 
-        localStorage.removeItem("user");
-
+        removeUser();
+        removeCartID();
         localStorage.removeItem("showInputs")
 
         navigate("/");
