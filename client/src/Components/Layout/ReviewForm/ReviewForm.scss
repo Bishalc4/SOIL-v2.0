@@ -36,11 +36,18 @@
 
         .star-rating-container{
             height: 6vh;
+            display: flex;
+            flex-direction: row;
 
             .star{
                 color: #E5C300;
                 width: auto;
                 height: 50%;
+                cursor: pointer;
+            }
+
+            .star.hovered {
+                color: #E5C300;
             }
         }
 
