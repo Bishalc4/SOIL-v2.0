@@ -1,10 +1,12 @@
 import { useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import { findProductReviews } from '../../data/review';
 import ReviewForm from '../../Components/Layout/ReviewForm/ReviewForm';
 import ReviewCard from '../../Components/Layout/ReviewCard/ReviewCard';
 import AddCartButton from '../../Components/Layout/AddCartButton/AddCartButton';
 import "./Product.scss"
+
+export const ReviewsContext = createContext();
 
 function Product() {
     const location = useLocation();
@@ -12,6 +14,11 @@ function Product() {
     const [isLoading, setIsLoading] = useState(true);
     const [reviews, setReviews] = useState([]);
     const [average, setAverage] = useState(0);
+    const [parentState, setParentState] = useState('initial state');
+
+    const updateParentState = (newState) => {
+        fetchReviews();
+      };    
 
     const fetchReviews = () => {
         async function loadReview() {
@@ -93,7 +100,7 @@ function Product() {
                     <h2>Average Rating: {average}</h2>
                 </div>
                 <div className='row'>
-                    <ReviewForm className="review-container" product_id={location.state.product.product_id}/>
+                    <ReviewForm className="review-container" updateParentState={updateParentState} product_id={location.state.product.product_id}/>
                 </div>
                 <div className='row'>
                     {isLoading ? (
@@ -101,7 +108,9 @@ function Product() {
                     ) : (
                         reviews.map((item, index) => (
                             <>
-                                <ReviewCard key={index} review={item} className="review-card"/>
+                                <ReviewsContext.Provider value={updateParentState}>
+                                    <ReviewCard key={index} review={item} className="review-card"/>
+                                </ReviewsContext.Provider>
                                 <br></br>
                             </>
                         ))
