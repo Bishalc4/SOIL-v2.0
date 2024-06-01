@@ -38,6 +38,12 @@ async function updateUser(username, first_name, last_name) {
   return response.data;
 }
 
+async function updatePassword(username, old_password, new_password) {
+  const response = await axios.put(`${API_HOST}/api/users/password/${username}`, {
+    params: { old_password, new_password }
+  });
+  return response.data;
+}
 
 // --- Helper functions to store logged in user in localstorage --------------------------------------------
 function setUser(user) {
@@ -55,5 +61,5 @@ function removeUser() {
 export {
   verifyUser, findUser, createUser,
   getUser, removeUser, deleteUser,
-  setUser, updateUser
+  setUser, updateUser, updatePassword
 }
