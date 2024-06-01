@@ -158,8 +158,9 @@ exports.deleteProductReviews = (req, res) => {
 exports.deleteUserReviews = (req, res) => {
     const username = req.params.username;
 
-    Review.destroy({
-        where: {username: username}
+    db.review.destroy({
+        where: {username: username},
+        truncate: true
     })
         .then(nums => {
             res.send({ message: `${nums} Reviews were deleted successfully!` })
