@@ -11,7 +11,6 @@ function EditReviewPopUp({ onClose, id }) {
     const rating = 3;
 
     const updateParent = useContext(ReviewsContext);
-    console.log(updateParent)
 
     const [reviewText, setReviewText] = useState(text);
     const [reviewRating, setReviewRating] = useState(rating);
@@ -35,9 +34,9 @@ function EditReviewPopUp({ onClose, id }) {
 
     for (let i = 0; i < 5; i++) {
         if (i < reviewRating) {
-            stars.push(<FaStar className="edit-star"/>);
+            stars.push(<FaStar key={i} className="edit-star"/>);
         } else {
-            stars.push(<FaRegStar className="edit-star"/>);
+            stars.push(<FaRegStar key={i} className="edit-star"/>);
         }
     }
 
