@@ -17,6 +17,9 @@ module.exports = (express, app) => {
     // Select one user from the database if username and password are a match.
     router.get("/login", controller.login);
 
+    // Update password for a user with username
+    router.put("/password/:username", controller.updatePassword);
+
     // Delete a user with username
     router.delete("/delete/:username", controller.delete);
   
