@@ -5,7 +5,7 @@ import ProfileAvatar from "../../assets/ProfileAvatar.png"
 import "./Profile.scss"
 
 function Profile() {
-    const currUser = JSON.parse((localStorage.getItem("user")));
+    const currUser = getUser();
 
     const [isLoading, setIsLoading] = useState(true);
     const [userProfile, setUserProfile] = useState({});
@@ -32,7 +32,7 @@ function Profile() {
     }, []);
     
     //signs user out by removing the user key
-    const handleSignOut = () => {
+     const handleSignOut = () => {
         if (localStorage.getItem("user")) {
             localStorage.removeItem("user");
         }
