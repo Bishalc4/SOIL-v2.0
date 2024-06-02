@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react';
-import { findUser } from '../../data/user';
+import { findUser, getUser } from '../../data/user';
 import ProfileAvatar from "../../assets/ProfileAvatar.png"
 import "./Profile.scss"
 
