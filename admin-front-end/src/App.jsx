@@ -1,6 +1,6 @@
 import Sidebar from './Components/Sidebar/Sidebar'
 import Navbar from './Components/Navbar/Navbar'
-import Dashboard from './Pages/Dashboard/Dashboard'
+// import { GET_USERS, VIEW_USERS } from "./Queries";
 import AllRoutes from './Pages/AllRoutes'
 import './App.scss'
 
