@@ -1,0 +1,80 @@
+.review-card-container{
+    height: 15vh;
+    display: flex;
+    flex-direction: row;
+    color: white;
+
+    .profile-image-container{
+        width: 5%;
+        margin: 0;
+        display: flex;
+        align-items: flex-start;
+        margin-right: 2%;
+
+        img{
+            width: 100%;
+            border-radius: 50%;
+            box-sizing: border-box;
+        }
+    }
+
+    .review-information-container{
+        width: 95%;
+        align-items: flex-start;
+
+        .star-rating-container{
+            .star{
+                color: #E5C300;
+            }
+        }
+
+        h2{
+            margin: 0;
+        }
+
+        .review-date{
+            font-size: 65%;
+        }
+
+        .username-btns-container{
+            width: 93%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            .edit-delete-container{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                #editBtn{
+                    color: white;
+                    background-color: #292828;
+                    border: none;
+                    cursor: pointer;
+
+                    .edit-container{
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                    }
+                }
+    
+                #deleteBtn{
+                    border: none;
+                    color: white;
+                    background-color: #292828;
+                    cursor: pointer;
+                    margin-left: 1%;
+
+                    .delete-container{
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                    }
+                }
+            }
+        }
+    }
+}
