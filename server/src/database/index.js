@@ -14,7 +14,6 @@ db.sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
 db.user = require("./models/user.js")(db.sequelize, DataTypes);
 db.cart = require("./models/cart.js")(db.sequelize, DataTypes);
 db.product = require("./models/product.js")(db.sequelize, DataTypes);
-db.admin = require("./models/admin.js")(db.sequelize, DataTypes);
 db.following = require("./models/following.js")(db.sequelize, DataTypes);
 db.review = require("./models/review.js")(db.sequelize, DataTypes);
 db.special = require("./models/special.js")(db.sequelize, DataTypes);

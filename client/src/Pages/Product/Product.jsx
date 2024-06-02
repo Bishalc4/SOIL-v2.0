@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect, createContext } from 'react';
 import { findProductReviews } from '../../data/review';
+import { getUser, blockList } from '../../data/user';
 import ReviewForm from '../../Components/Layout/ReviewForm/ReviewForm';
 import ReviewCard from '../../Components/Layout/ReviewCard/ReviewCard';
 import AddCartButton from '../../Components/Layout/AddCartButton/AddCartButton';
@@ -10,6 +11,17 @@ export const ReviewsContext = createContext();
 
 function Product() {
     const location = useLocation();
+    const [isBlocked, setIsBlocked] = useState(false); 
+
+    useEffect(() => {
+        async function fetchData() {
+            const blocklist = await blockList();
+            const user = await getUser();
+            const blocked = blocklist.find(item => item.username === user);
+            setIsBlocked(blocked);
+        }
+        fetchData();
+    }, []);
 
     const [isLoading, setIsLoading] = useState(true);
     const [reviews, setReviews] = useState([]);
@@ -100,7 +112,9 @@ function Product() {
                     <h2>Average Rating: {average}</h2>
                 </div>
                 <div className='row'>
+                    {!isBlocked && (
                     <ReviewForm className="review-container" updateParentState={updateParentState} product_id={location.state.product.product_id}/>
+                    )}
                 </div>
                 <div className='row'>
                     {isLoading ? (

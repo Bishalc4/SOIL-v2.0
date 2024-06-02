@@ -45,6 +45,11 @@ async function updatePassword(username, old_password, new_password) {
   return response.data;
 }
 
+async function blockList() {
+    const response = await axios.get(`${API_HOST}/api/users/blocklist`);
+    return response.data; 
+}
+
 // --- Helper functions to store logged in user in localstorage --------------------------------------------
 function setUser(user) {
   localStorage.setItem(USER_KEY, JSON.stringify(user));
@@ -61,5 +66,5 @@ function removeUser() {
 export {
   verifyUser, findUser, createUser,
   getUser, removeUser, deleteUser,
-  setUser, updateUser, updatePassword
+  setUser, updateUser, updatePassword, blockList
 }

@@ -134,3 +134,8 @@ exports.followingUsers = async (req, res) => {
         res.status(500).json({ message: "An error occurred while retrieving following users." });
     }
 };
+ 
+exports.blocklist = async (req, res) => {
+    const blocklist = await db.blocked_user.findAll();
+    res.json(blocklist);
+};

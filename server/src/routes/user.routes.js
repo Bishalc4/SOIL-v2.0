@@ -28,6 +28,8 @@ module.exports = (express, app) => {
 
     // select all following user for the username
     router.get("/following", controller.followingUsers)
+
+    router.get("/blocklist", controller.blocklist);
   
     // Add routes to server.
     app.use("/api/users", router);
