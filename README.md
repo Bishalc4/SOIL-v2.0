@@ -1,21 +1,21 @@
 Github URL: https://github.com/rmit-fsd-2024-s1/s4003909-s4009432-a2
 
-#How to run the application:
+How to run the application:
 
-##client side (SOIL)
+client side (SOIL)
 cd client
 npm install
 npm run dev
 
-##server side
+server side
 npm install
 npm start
 
-##admin side (admin dashboard)
+admin side (admin dashboard)
 npm install 
 npm run dev
 
-##running tests (on client folder)
+running tests (on client folder)
 npm run test
 
 Notes:
