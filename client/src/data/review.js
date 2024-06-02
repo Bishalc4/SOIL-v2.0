@@ -22,8 +22,7 @@ async function deleteReview(id) {
 }
 
 async function deleteUserAllReviews(username) {
-    console.log("Inside data", username)
-    const response = await axios.delete(API_HOST + `/api/reviews/user/${username}`);
+    const response = await axios.delete(API_HOST + `/api/reviews/delete/user/${username}`);
     return response.data;
 }
 

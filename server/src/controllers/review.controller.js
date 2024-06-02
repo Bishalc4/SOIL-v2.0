@@ -154,22 +154,22 @@ exports.deleteProductReviews = (req, res) => {
         });
 }
 
-//Delete a Review with the username in the request
-exports.deleteUserReviews = (req, res) => {
-    console.log("inside controller", req.params.username);
-    const username = req.params.username;
+//Delete reviews with the username in the request
+exports.deleteUserReviews = async (req, res) => {
+    try {
+        const userReviews = await db.review.findAll({ where: { username: req.params.username } });
 
-    db.review.destroy({
-        where: {username: username},
-        truncate: true
-    })
-        .then(nums => {
-            res.send({ message: `${nums} Reviews were deleted successfully!` })
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Could not delete Review for user=" + username
-            });
-        });
-}
+        if (userReviews.length > 0) {
+            for (const userReview of userReviews) {
+                await userReview.destroy();
+            }
+            res.status(200).json({ message: `All reviews for user ${req.params.username} deleted successfully.` });
+        } else {
+            res.status(404).json({ message: `No reviews found for user ${req.params.username}.` });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Could not delete reviews for user=" + req.params.username });
+    }
+};
+
 

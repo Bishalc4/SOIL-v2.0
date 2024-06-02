@@ -26,8 +26,8 @@ module.exports = (express, app) => {
   //get all reviews for a particular user
   router.get("/user/:username", controller.findByUser);
 
-  //delete a Review with username
-  router.delete("user/:username", controller.deleteUserReviews);
+  //delete all reviews for username
+  router.delete("/delete/user/:username", controller.deleteUserReviews);
 
   // Add routes to server.
   app.use("/api/reviews", router);
