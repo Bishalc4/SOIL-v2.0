@@ -1,0 +1,35 @@
+.product-table-container {
+    margin: 20px;
+    padding: 10px;
+  }
+  
+  .product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th:nth-child(5), td:nth-child(5) {
+        width: 5vw; /* Adjust the width of the Edit/Delete column */
+    }
+
+    .action-icon{
+        display: flex;
+        flex-direction: column;
+
+        button{
+            cursor: pointer;
+            background-color: #282828;
+            color: white;
+            border: .01px solid #AAAAAA;
+            padding: .4%;
+            border-radius: 2px;
+        }
+    }
+  }
+  
