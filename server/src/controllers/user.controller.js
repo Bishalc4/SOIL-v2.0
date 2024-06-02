@@ -112,3 +112,25 @@ exports.updatePassword = async (req, res) => {
         res.status(500).json({ message: "An error occurred while updating the password." });
     }
 };
+
+exports.followUser = async (req, res) => { 
+    try {
+        const follow = await db.following.create({
+            username: req.body.username,
+            following_username: req.body.following_username
+        });
+        res.json(follow);
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred while following the user." });
+    }
+};
+
+exports.followingUsers = async (req, res) => {
+    try {
+        const username = req.query.username;
+        const following = await db.following.findAll({ where: { username: username } });
+        res.json(following);
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred while retrieving following users." });
+    }
+};
