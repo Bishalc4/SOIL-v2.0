@@ -156,6 +156,7 @@ exports.deleteProductReviews = (req, res) => {
 
 //Delete a Review with the username in the request
 exports.deleteUserReviews = (req, res) => {
+    console.log("inside controller", req.params.username);
     const username = req.params.username;
 
     db.review.destroy({

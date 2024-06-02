@@ -84,7 +84,9 @@ function ReviewForm({updateParentState, product_id}) {
             const newReview = { text: reviewText, rating: rating, username: currUser, product_id: product_id};
             await createReview(newReview);
             setReviewText("");
+            setRating(0);
             updateParentState('Updated State from Child');
+            setStars(new Array(5).fill(false));
         } catch (error) {
             console.error("Error posting review:", error);
         }
