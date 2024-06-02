@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import CustomerTable from "../../Components/CustomerTable/CustomerTable";
-import { getUsers, getBlockedUsers } from "../../Queries";
+import { getUsers } from "../../Queries";
 import "./Customers.scss";
 
 function Customers() {

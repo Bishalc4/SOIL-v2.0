@@ -1,15 +1,10 @@
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import ProfileAvatar from "../../assets/ProfileAvatar.png"
+import { addDeletedReview } from "../../Queries";
 import "./ReviewCard.scss"
 
-function ReviewCard(props) {
-    var date = props.review.updatedAt;
-    const year = date.substring(0, 4);
-    const month = date.substring(5, 7);
-    const day = date.substring(8, 10)
-    date = day+"/"+month+"/"+year;
-    
+function ReviewCard(props) {    
     const text = props.review.text;
     const username = props.review.username;
 
@@ -24,8 +19,13 @@ function ReviewCard(props) {
         }
     }
 
-    //if currUser == username, also display a delete button and edit button
-    //if updatetime !== createTime -> have "(edited)" next to the username
+    const handleDelete = async (review_id) => {
+        try {
+            await addDeletedReview(review_id);
+        } catch (error) {
+            console.error("Failed to delete review ", error);
+        }
+    };
 
     return(
         <div className="review-card-container">
@@ -40,7 +40,7 @@ function ReviewCard(props) {
                     <h2>@{username}</h2>
                 </div>
                 <p>{text}</p>
-                <p className="review-date">{date}</p>
+                <button onClick={() => handleDelete(props.review.review_id)}>delete</button>
             </div>
         </div>
     );

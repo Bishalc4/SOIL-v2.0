@@ -224,11 +224,15 @@ const root = {
   },
 
   deleteBlockedUser: async (args) => {
+    console.log("reached here");
     const blockedUser = await db.blocked_user.findByPk(args.blocked_id);
+    console.log(blockedUser);
     if (!blockedUser) {
       throw new Error('Blocked user not found');
     }
+
     await blockedUser.destroy();
+
     return `Blocked user ${args.blocked_id} deleted`;
   },
   
