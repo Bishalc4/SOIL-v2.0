@@ -20,10 +20,19 @@
     }
 
     .edit-review-stars{
-        .edit-star{
+        height: 6vh;
+        display: flex;
+        flex-direction: row;
+
+        .star{
             color: #E5C300;
             width: auto;
-            height: 3vh;
+            height: 50%;
+            cursor: pointer;
+        }
+
+        .star.hovered {
+            color: #E5C300;
         }
     }
 
