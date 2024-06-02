@@ -10,11 +10,15 @@ function ReviewForm({updateParentState, product_id}) {
     const [reviewText, setReviewText] = useState("");
     const [rating, setRating] = useState(0);
 
+    const [fixed, setFixed] = useState(false);
+
     //stores each star as either 'true' or 'false' depending on if it being hovered over
     const [stars, setStars] = useState(new Array(5).fill(false));
 
     //sets all of the elements from [0-index] to true
     const handleMouseEnter = (index) => {
+        setFixed(false);
+
         var newHovered = [];
         for (let i = 0; i < 5; i++) {
             if (i <= index) {
@@ -30,11 +34,27 @@ function ReviewForm({updateParentState, product_id}) {
     
     //set the stars array back to its default (all 'false')
     const handleMouseLeave = () => {
+        if (fixed === true) {
+            return;
+        }
+
         setStars(new Array(5).fill(false));
     };
 
     const handleMouseClick = (index) => {
         setRating(index+1);
+
+        var tempStars = [];
+        for (let i = 0; i < 5; i++) {
+            if (i < index+1) {
+                tempStars.push(true);
+            } else {
+                tempStars.push(false);
+            }
+        }
+
+        setStars(tempStars);
+        setFixed(true);
     }
 
     //renders the stars based on the "stars" useState variable
@@ -43,9 +63,9 @@ function ReviewForm({updateParentState, product_id}) {
 
         for (let i = 0; i < 5; i++) {
             if (stars[i] === true) {
-                starContainer.push(<FaStar key={i} className={`star hovered`} onMouseEnter={() => handleMouseEnter(i)} onMouseLeave={handleMouseLeave} onClick={() => handleMouseClick(i)} />)
+                starContainer.push(<FaStar key={i} className={`star hovered`} data-testid={`star-${i}`} onMouseEnter={() => handleMouseEnter(i)} onMouseLeave={handleMouseLeave} onClick={() => handleMouseClick(i)} />)
             } else {
-                starContainer.push(<FaRegStar key={i} className={`star`} onMouseEnter={() => handleMouseEnter(i)} onMouseLeave={handleMouseLeave} />)
+                starContainer.push(<FaRegStar key={i} className={`star`} data-testid={`star-${i}`} onMouseEnter={() => handleMouseEnter(i)} onMouseLeave={handleMouseLeave} onClick={() => handleMouseClick(i)} />)
             }
         }
         return starContainer;
