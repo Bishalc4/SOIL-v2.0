@@ -21,6 +21,11 @@ async function deleteReview(id) {
     return response.data;
 }
 
+async function deleteUserAllReviews(username) {
+    const response = await axios.delete(API_HOST + `/api/reviews/user/${username}`);
+    return response.data;
+}
+
 async function updateReview(id, text, rating) {
     const response = await axios.put(API_HOST + `/api/reviews/${id}`, { text, rating })
     return response.data;
@@ -34,6 +39,6 @@ async function findByReviewID(id) {
 }
 
 export {
-    findProductReviews, createReview,
+    findProductReviews, createReview, deleteUserAllReviews,
     deleteReview, findByReviewID, updateReview
 }

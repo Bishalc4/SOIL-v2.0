@@ -83,3 +83,32 @@ exports.update = async (req, res) => {
       });
   });
 }
+
+exports.updatePassword = async (req, res) => {
+    try {
+        const username = req.params.username;
+        const { old_password, new_password } = req.body.params;
+
+        const user = await db.user.findByPk(username);
+        if (!user) {
+            return res.status(404).json({ message: `User with username ${username} not found.` });
+        }
+
+        // Verify the old password
+        const isPasswordValid = await argon2.verify(user.password_hash, old_password);
+        if (!isPasswordValid) {
+            return res.status(200).json(null);
+        }
+
+        // Hash the new password
+        const newPasswordHash = await argon2.hash(new_password, { type: argon2.argon2id });
+
+        // Update the password in the database
+        user.password_hash = newPasswordHash;
+        await user.save();
+
+        res.status(200).json({ message: "Password updated successfully." });
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred while updating the password." });
+    }
+};

@@ -1,16 +1,9 @@
 function validate(values) {
-    const currUser = JSON.parse((localStorage.getItem("user")));
-    const users = JSON.parse((localStorage.getItem("users")));
-    const usersIndex = users.findIndex(item => item.username === currUser);
 
     let errors = {};
     
     if (!values.currPassword) {
         errors.currPassword = 'Password is required'; }   
-    
-    if(currUser && values.currPassword !== users[usersIndex].password) {
-            errors.currPassword = "Password is incorrect";                                 // check if new password matches with the password stored in localstorage
-        }
     
     if (!values.password) {
     errors.password = 'Password is required'; } //check if password field is empty
