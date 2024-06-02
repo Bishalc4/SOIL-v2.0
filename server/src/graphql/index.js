@@ -18,6 +18,7 @@ const schema = buildSchema(`
     price: Float!
     category: String!
     imageUrl: String!
+    special: Special
   }
 
   type Special {
@@ -51,6 +52,9 @@ const schema = buildSchema(`
     addProduct(product_name: String!, price: Float!, category: String!, imageUrl: String!): Product
     editProduct(product_id: Int!, product_name: String, price: Float, category: String, imageUrl: String): Product
     deleteProduct(product_id: Int!): String
+    addSpecialProduct(product_name: String!, price: Float!, category: String!, imageUrl: String!, special_price: Float!): Product
+    editSpecialProduct(product_id: Int!, product_name: String, price: Float, category: String, imageUrl: String, special_price: Float): Product
+    deleteSpecialProduct(product_id: Int!): String
     addBlockedUser(username: String!): BlockedUser
     deleteBlockedUser(blocked_id: Int!): String
     addDeletedReview(review_id: Int!): DeletedReview
@@ -64,6 +68,10 @@ const root = {
 
   product: async (args) => {
     return await db.product.findByPk(args.product_id);
+  },
+
+  special: async (args) => {
+    return await db.special.findByPk(args.special_id);
   },
 
   allUsers: async () => {
@@ -118,6 +126,64 @@ const root = {
     await product.destroy();
     return `Product ${args.product_id} deleted`;
   }, 
+
+  addSpecialProduct: async (args) => {
+    const product = await db.product.create({
+      product_name: args.product_name,
+      price: args.price,
+      category: args.category,
+      imageUrl: args.imageUrl,
+    });
+
+    await db.special.create({
+      special_price: args.special_price,
+      product_id: product.product_id,
+    });
+
+    const special = await db.special.findOne({ where: { product_id: product.product_id } });
+
+    return { ...product.dataValues, special };
+  },
+
+  editSpecialProduct: async (args) => {
+    const product = await db.product.findByPk(args.product_id);
+    if (!product) {
+      throw new Error('Product not found');
+    }
+
+    await product.update({
+      product_name: args.product_name !== undefined ? args.product_name : product.product_name,
+      price: args.price !== undefined ? args.price : product.price,
+      category: args.category !== undefined ? args.category : product.category,
+      imageUrl: args.imageUrl !== undefined ? args.imageUrl : product.imageUrl,
+    });
+
+    const special = await db.special.findOne({ where: { product_id: args.product_id } });
+    if (!special) {
+      throw new Error('Special price not found for the product');
+    }
+
+    await special.update({ special_price: args.special_price });
+
+    return { ...product.dataValues, special };
+  },
+
+  deleteSpecialProduct: async (args) => {
+    const product = await db.product.findByPk(args.product_id);
+    if (!product) {
+      throw new Error('Product not found');
+    }
+    
+    const special = await db.special.findOne({ where: { product_id: args.product_id } });
+    if (!special) {
+      throw new Error('Special price not found for the product');
+    }
+
+    await special.destroy();
+    await product.destroy();
+
+    return `Product ${args.product_id} with special price deleted`;
+  },
 
   addBlockedUser: async (args) => {
     const blockedUser = await db.blocked_user.create({
