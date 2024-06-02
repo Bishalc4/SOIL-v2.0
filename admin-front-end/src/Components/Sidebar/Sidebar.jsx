@@ -39,12 +39,6 @@ function Sidebar() {
                         <span>Customers</span>
                     </Link>
                 </li>
-                <li>
-                <Link to="/statistics" className='sidebar-link'>
-                    <BsGraphUpArrow className='sidebar-icon' />
-                    <span>Statistics</span>
-                </Link>
-                </li>
             </ul>
         </div>
     );
