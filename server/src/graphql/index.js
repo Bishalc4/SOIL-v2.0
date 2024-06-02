@@ -25,6 +25,15 @@ const schema = buildSchema(`
     special_id: Int!
     special_price: Float!
     product_id: Int!
+    product: Product
+  }
+
+  type Review {
+    review_id: Int!
+    text: String!
+    rating: Int!
+    username: String!
+    product_id: Int!
   }
 
   type BlockedUser {
@@ -41,6 +50,7 @@ const schema = buildSchema(`
     user(username: String!): User
     product(product_id: Int!): Product
     special(special_id: Int!): Special
+    allReviews: [Review]
     allUsers: [User]
     allProducts: [Product] 
     allSpecials: [Special]   
@@ -67,11 +77,12 @@ const root = {
   },
 
   product: async (args) => {
-    return await db.product.findByPk(args.product_id);
-  },
-
-  special: async (args) => {
-    return await db.special.findByPk(args.special_id);
+    const product = await db.product.findByPk(args.product_id);
+    if (!product) {
+      throw new Error('Product not found');
+    }
+    const special = await db.special.findOne({ where: { product_id: product.product_id } });
+    return { ...product.dataValues, special };
   },
 
   allUsers: async () => {
@@ -79,11 +90,31 @@ const root = {
   },
 
   allProducts: async () => {
-    return await db.product.findAll(); 
+  const products = await db.product.findAll();
+  const productsWithSpecials = [];
+
+  for (const product of products) {
+    const special = await db.special.findOne({ where: { product_id: product.product_id } });
+    productsWithSpecials.push({ ...product.dataValues, special });
+  }
+
+  return productsWithSpecials;
   },
 
   allSpecials: async () => {
-    return await db.special.findAll(); 
+  const specials = await db.special.findAll();
+  const specialsWithProducts = [];
+
+  for (const special of specials) {
+    const product = await db.product.findByPk(special.product_id);
+    specialsWithProducts.push({ ...special.dataValues, product });
+  }
+
+  return specialsWithProducts;
+  },
+
+  allReviews: async () => {
+    return await db.review.findAll();
   },
 
   allBlockedUsers: async () => {
