@@ -36,9 +36,9 @@ function ReviewCard(props) {
 
     for (let i = 0; i < 5; i++) {
         if (i < rating) {
-            stars.push(<FaStar className="star"/>);
+            stars.push(<FaStar key={i} className="star"/>);
         } else {
-            stars.push(<FaRegStar className="star"/>);
+            stars.push(<FaRegStar key={i} className="star"/>);
         }
     }
 

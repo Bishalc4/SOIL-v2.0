@@ -106,14 +106,14 @@ function Product() {
                     {isLoading ? (
                         <p>Loading...</p>
                     ) : (
-                        reviews.map((item, index) => (
-                            <>
-                                <ReviewsContext.Provider value={updateParentState}>
-                                    <ReviewCard key={index} review={item} className="review-card"/>
-                                </ReviewsContext.Provider>
-                                <br></br>
-                            </>
-                        ))
+                        <ReviewsContext.Provider value={updateParentState}>
+                            {reviews.map((item) => (
+                                <div key={item.review_id}>
+                                    <ReviewCard review={item} className="review-card" />
+                                    <br />
+                                </div>
+                            ))}
+                        </ReviewsContext.Provider>
                     )}
                 </div>
             </div>
