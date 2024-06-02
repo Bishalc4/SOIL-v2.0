@@ -1,7 +1,7 @@
 module.exports = {
-    HOST: "rmit.australiaeast.cloudapp.azure.com",
-    USER: "s4003909_fsd_a2",
-    PASSWORD: "abc123",
-    DB: "s4003909_fsd_a2",
-    DIALECT: "mysql"
+  HOST: "rmit.australiaeast.cloudapp.azure.com",
+  USER: "demo_fwp_graphql_crud",
+  PASSWORD: "abc123",
+  DB: "demo_fwp_graphql_crud",
+  DIALECT: "mysql"
 };
