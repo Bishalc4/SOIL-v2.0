@@ -1,9 +1,10 @@
+import CustomerTable from "../../Components/CustomerTable/CustomerTable";
 import "./Customers.scss";
 
 function Customers() {
     return(
         <div className="customers-container">
-            <p>Customers page</p>
+            <CustomerTable />
         </div>
     );
 }
