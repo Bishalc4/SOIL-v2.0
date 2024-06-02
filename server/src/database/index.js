@@ -19,6 +19,8 @@ db.following = require("./models/following.js")(db.sequelize, DataTypes);
 db.review = require("./models/review.js")(db.sequelize, DataTypes);
 db.special = require("./models/special.js")(db.sequelize, DataTypes);
 db.cart_item = require("./models/cart_item.js")(db.sequelize, DataTypes);
+db.blocked_user = require("./models/blocked_user.js") (db.sequelize, DataTypes);
+db.deleted_review = require("./models/deleted_review.js") (db.sequelize, DataTypes);
 
 // Define associations
 db.product.hasOne(db.special, { as: "special", foreignKey: "product_id", });
@@ -36,6 +38,12 @@ db.cart.belongsTo(db.user, { foreignKey: "username", as: "user", });
 db.cart.belongsToMany(db.product, { through: db.cart_item, as: "products", foreignKey: 'cart_id' });
 db.product.belongsToMany(db.cart, { through: db.cart_item, as: "carts", foreignKey: 'product_id' });
 
+db.user.hasOne(db.blocked_user, { as: "blocked", foreignKey: "username", });
+db.blocked_user.belongsTo(db.user, { foreignKey: "username", as: "blockedBy", });
+
+db.review.hasOne(db.deleted_review, { as: "deleted", foreignKey: "review_id", });
+db.deleted_review.belongsTo(db.review, { foreignKey: "review_id", as: "deleted", });
+
 
 db.sync = async () => {
   // Sync schema.
@@ -45,19 +53,9 @@ db.sync = async () => {
 };
 
 async function seedData() {
-  const count = await db.user.count();
+  const countProducts = await db.product.count(); 
 
-  if (count > 0) {
-    return;
-  }
-
-  const argon2 = require("argon2");
-
-  let hash = await argon2.hash("Happy123$", { type: argon2.argon2id });
-
-  await db.user.create({ username: "mbolger", password_hash: hash, email: "mbolger@gmail.com", first_name: "Matthew", last_name : "Bolger", joinDate: "2024-05-14 12:34:56"});
-  await db.cart.create({ username: "mbolger"});
-
+  if (countProducts < 1) {
   await db.product.create({ product_name: "Organic Banana", price: 0.70, category: "Fruits", imageUrl: "banana" });
   await db.product.create({ product_name: "Organic Cucumber", price: 1.20, category: "Vegetables", imageUrl: "cucumber" });
   await db.product.create({ product_name: "Organic Apple", price: 1.00, category: "Fruits", imageUrl: "apple" });
@@ -100,6 +98,22 @@ async function seedData() {
   await db.special.create({ special_price: 9.99, product_id: 24});
   await db.special.create({ special_price: 9.5, product_id: 26});
   await db.special.create({ special_price: 2.4, product_id: 29});
+  }
+
+  const countUsers = await db.user.count();
+
+  if (countUsers > 0) {
+    return;
+  }
+
+  const argon2 = require("argon2");
+
+  let hash = await argon2.hash("Happy123$", { type: argon2.argon2id });
+  let hash2 = await argon2.hash("Fullstack10$", { type: argon2.argon2id });
+
+  await db.user.create({ username: "mbolger", password_hash: hash, email: "mbolger@gmail.com", first_name: "Matthew", last_name : "Bolger", joinDate: "2024-05-14 12:34:56"});
+  await db.user.create({ username: "smith", password_hash: hash2, email: "msmith@gmail.com", first_name: "Matt", last_name : "Smith", joinDate: "2024-05-14 12:34:56"});
+  await db.cart.create({ username: "mbolger"});
 
   await db.cart_item.create({ cart_id: 1, product_id: 10, quantity: 1 });
   await db.cart_item.create({ cart_id: 1, product_id: 12, quantity: 1 });
@@ -113,6 +127,9 @@ async function seedData() {
   await db.review.create({text: "Nope from me dog", rating: 1, username: "mbolger",	product_id: 2});
   await db.review.create({text: "This product sucks :(", rating: 1, username: "mbolger",	product_id: 12});
   await db.review.create({text: "Great service and quick delivery. But fruit lacked :)", rating: 5, username: "mbolger",	product_id: 9});
+
+  await db.blocked_user.create({ username: "mbolger"});
+  await db.deleted_review.create({ review_id: 1});
 }
 
 module.exports = db;

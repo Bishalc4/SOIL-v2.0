@@ -22,6 +22,12 @@ module.exports = (express, app) => {
 
     // Delete a user with username
     router.delete("/delete/:username", controller.delete);
+
+    // Create a new following
+    router.post("/follow", controller.followUser)
+
+    // select all following user for the username
+    router.get("/following", controller.followingUsers)
   
     // Add routes to server.
     app.use("/api/users", router);
