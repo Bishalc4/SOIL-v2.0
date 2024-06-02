@@ -1,14 +1,40 @@
 import "./CustomerTable.scss";
-import { addBlockedUser } from "../../Queries";
+import { addBlockedUser, getBlockedUsers, deleteBlockedUser } from "../../Queries";
+import { useState, useEffect } from "react";
+
 
 function CustomerTable({ users }) {
+    const [blockedUsers, setBlockedUsers] = useState([]);
 
-    const handleSubmit = async (username) => {
+    console.log(blockedUsers);
+
+    useEffect(() => {
+        async function loadUsers() {
+            const blocked_users = await getBlockedUsers();
+            setBlockedUsers(blocked_users);
+        }
+    loadUsers();
+    }, []);
+
+    //checks if the user is blocked
+    const isBlocked = (username) => blockedUsers.some(user => user.username === username);
+
+    const handleUnblock = async (username) => {
+        const id = blockedUsers.find(user => user.username === username);
+        console.log("ID", id.blocked_id);
+
+        try {
+            await deleteBlockedUser(id.blocked_id);
+        } catch (error) {
+            console.error("Failed to block ", error);
+        }
+    };
+
+    const handleBlock = async (username) => {
         try {
             await addBlockedUser(username);
-            console.log(`User ${username} has been blocked`);
         } catch (error) {
-            console.error("Failed to block user:", error);
+            console.error("Failed to block ", error);
         }
     };
 
@@ -34,7 +60,11 @@ function CustomerTable({ users }) {
                             <td>{user.last_name || "-"}</td>
                             <td>{user.joinDate}</td>
                             <td className='action-icon'>
-                                <button onClick={() => handleSubmit(user.username)}>Block</button>
+                                {isBlocked(user.username) === true ? (
+                                    <button onClick={() => handleUnblock(user.username)} >Unblock</button>
+                                ): (
+                                    <button onClick={() => handleBlock(user.username)}>Block</button>
+                                )}
                             </td>
                         </tr>
                     ))}
