@@ -1,5 +1,36 @@
 .navbar-container{
     height: 7%;
     background-color: #282828;
-    box-shadow: 0 8px qwpx -1px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 12px -4px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 2%;
+
+    .profile-icon{
+        border-radius: 50%;
+        border: 1px solid white;
+        height: 80%;
+        aspect-ratio: 1/1;
+        margin-left: 2%;
+    }
+
+    .create-product-button{
+        display: flex;
+        width: 11%;
+        align-items: center;
+        background-color: #282828;
+        color: white;
+        border: .01px solid #AAAAAA;
+        padding: .4%;
+        border-radius: 2px;
+
+        span{
+            margin-left: 5%;
+        }
+
+        .upload-icon{
+            color: #FF4E45;
+        }
+    }
 }

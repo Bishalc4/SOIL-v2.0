@@ -3,4 +3,71 @@
     width: 100%;
     background-color: #1F1F1F;
     color: white;
+    display: flex;
+    flex-direction: column;
+    padding-top: 5%;
+
+    .row{
+        border: 1px solid red;
+        margin-bottom: 3%;
+    }
+
+    #sales-container{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        height: 12vh;
+
+        .total-sales-container{
+            border: 1px solid white;
+            height: 100%;
+            width: 25%;
+        }
+
+        .total-orders-container{
+            border: 1px solid white;
+            height: 100%;
+            width: 25%;
+        }
+
+        .total-products-container{
+            border: 1px solid white;
+            height: 100%;
+            width: 25%;
+        }
+    }
+
+    #charts-container{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        height: 35vh;
+
+        .product-sales-container{
+            border: 1px solid white;
+            height: 100%;
+            width: 53%;
+        }
+
+        .ratings-chart-container{
+            border: 1px solid white;
+            height: 100%;
+            width: 30%;
+        }
+    }
+
+    #latest-reviews-container{
+        display: flex;
+        height: 30vh;
+        align-items: center;
+        justify-content: center;
+
+        .latest-customer-reviews{
+            border: 1px solid white;
+            height: 100%;
+            width: 92%;
+        }
+    }
 }
