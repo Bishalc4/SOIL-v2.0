@@ -1,7 +1,8 @@
+import "./Customers.scss";
 
 function Customers() {
     return(
-        <div>
+        <div className="customers-container">
             <p>Customers page</p>
         </div>
     );

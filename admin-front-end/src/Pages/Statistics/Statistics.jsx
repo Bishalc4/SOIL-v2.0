@@ -1,7 +1,8 @@
+import "./Statistics.scss";
 
 function Statistics() {
     return(
-        <div>
+        <div className="statistics-container">
             <p>Statistics page</p>
         </div>
     );

@@ -1,7 +1,8 @@
+import "./Reviews.scss";
 
 function Reviews() {
     return(
-        <div>
+        <div className="reviews-container">
             <p>Reviews page</p>
         </div>
     );

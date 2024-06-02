@@ -1,7 +1,8 @@
+import "./Products.scss";
 
 function Products() {
     return(
-        <div>
+        <div className="products-container">
             <p>Products page</p>
         </div>
     );
