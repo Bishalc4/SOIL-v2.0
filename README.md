@@ -1,4 +1,4 @@
-Github URL: https://github.com/rmit-fsd-2024-s1/s4003909-s4009432-a2
+# SOIL v2.0
 
 How to run the application:
 
